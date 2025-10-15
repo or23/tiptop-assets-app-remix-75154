@@ -9,6 +9,8 @@ import { ModelGenerationProvider } from './contexts/ModelGeneration';
 import { Toaster } from './components/ui/toaster';
 
 import React, { Suspense, lazy } from 'react';
+import BottomNavBar from './components/BottomNavBar';
+
 // Page imports
 import Index from './pages/Index';
 const Auth = lazy(() => import('./pages/Auth'));
@@ -29,6 +31,7 @@ const Options = lazy(() => import('./pages/Options'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 const AccountPage = lazy(() => import('./pages/AccountPage'));
 const ManageAssets = lazy(() => import('./pages/ManageAssets'));
+const NewAddress = lazy(() => import('./pages/NewAddress'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 const queryClient = new QueryClient({
@@ -52,6 +55,7 @@ function App() {
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/auth" element={<Auth />} />
+                  <Route path="/new-address" element={<NewAddress />} />
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/dashboard/manage" element={<ManageAssets />} />
                   <Route path="/dashboard/admin" element={<AdminDashboard />} />
@@ -72,6 +76,7 @@ function App() {
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Suspense>
+              <BottomNavBar />
               <Toaster />
             </ModelGenerationProvider>
           </GoogleMapProvider>

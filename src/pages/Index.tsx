@@ -189,7 +189,7 @@ const Index = () => {
   const showBanner = status !== 'idle' && (status === 'generating' || status === 'error');
 
   return (
-    <div className="min-h-screen relative overflow-hidden flex flex-col" style={{ background: 'linear-gradient(to bottom right, #1e293b, #111827, #000000)' }}>
+    <div className="min-h-screen relative overflow-hidden flex flex-col pb-16" style={{ background: 'linear-gradient(to bottom right, #1e293b, #111827, #000000)' }}>
       {/* Journey Tracker */}
       <JourneyTracker />
 
@@ -218,60 +218,28 @@ const Index = () => {
         className="relative z-10 flex-1 flex flex-col items-center"
         style={{ filter: showLeadCapture ? 'blur(8px)' : 'none', pointerEvents: showLeadCapture ? 'none' : 'auto' }}
       >
-        {/* Header - Responsive */}
-        <header className="w-full p-3 sm:p-4 md:p-6 flex justify-between items-center">
-          <Link to="/" className="text-xl sm:text-2xl md:text-3xl font-bold text-tiptop-purple hover:scale-105 transition-transform flex items-center">
+        {/* Simplified Mobile Header */}
+        <header className="w-full p-4 flex justify-between items-center bg-gray-900/50 backdrop-blur-lg">
+          <Link to="/" className="text-2xl font-bold text-primary hover:scale-105 transition-transform">
             tiptop
           </Link>
-          <div className="flex gap-2 sm:gap-3 md:gap-4">
-            {isAdmin && (
-              <>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      className="glass-effect px-2 py-1 sm:px-3 sm:py-2 rounded-full flex items-center gap-1 sm:gap-2 text-white hover:scale-105 transition-transform text-xs sm:text-sm border-orange-500/50"
-                    >
-                      🔧 Test
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-                    <DialogHeader>
-                      <DialogTitle>OpenAI Connection Test</DialogTitle>
-                    </DialogHeader>
-                    <OpenAIConnectionTest />
-                  </DialogContent>
-                </Dialog>
-                <Link
-                  to="/dashboard/admin"
-                  className="glass-effect px-2 py-1 sm:px-3 sm:py-2 md:px-4 md:py-2 rounded-full flex items-center gap-1 sm:gap-2 text-white hover:scale-105 transition-transform text-xs sm:text-sm md:text-base relative"
-                >
-                  <Settings size={isMobile ? 12 : 16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" />
-                  <span className="text-gray-100">Admin</span>
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-red-500/20 to-orange-500/20 rounded-full blur-sm -z-10"></div>
-                </Link>
-              </>
-            )}
-            {!isFirstTimeUser() && (
-              <Link 
-                to={user ? "/dashboard" : "/auth"} 
-                className="glass-effect px-2 py-1 sm:px-3 sm:py-2 md:px-4 md:py-2 rounded-full flex items-center gap-1 sm:gap-2 text-white hover:scale-105 transition-transform text-xs sm:text-sm md:text-base relative"
-              >
-                <span className="text-gray-100">Sign In</span>
-                {user && <div className="w-2 h-2 bg-green-400 rounded-full"></div>}
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500/20 to-violet-500/20 rounded-full blur-sm -z-10"></div>
-              </Link>
-            )}
-          </div>
+          {user && (
+            <div className="flex items-center gap-2 text-white text-sm">
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+              <span className="text-gray-300">Connected</span>
+            </div>
+          )}
         </header>
 
-        {/* Main content - flex-1 to take available space */}
-        <main className="flex-1 w-full flex flex-col items-center justify-start px-3 sm:px-4 md:px-6 transition-all duration-500">
-          <div className={`text-center mb-4 sm:mb-6 md:mb-8 transform transition-all duration-500 ${isCollapsed ? 'scale-0 h-0 mb-0' : 'scale-100'}`}>
-            <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2 drop-shadow-lg px-4">
-              {isAnalyzing ? "Analyzing Your Home Assets..." : "Monetize Your Home Assets"}
+        {/* Main content - App-like mobile experience */}
+        <main className="flex-1 w-full flex flex-col items-center justify-start px-4 transition-all duration-500">
+          <div className={`text-center mb-6 transform transition-all duration-500 ${isCollapsed ? 'scale-0 h-0 mb-0' : 'scale-100'}`}>
+            <h1 className="text-2xl font-bold text-white mb-2 drop-shadow-lg">
+              {isAnalyzing ? "🏡 Analyzing..." : "🏡 Monetize Your Home"}
             </h1>
+            <p className="text-gray-400 text-sm">
+              Discover hidden revenue opportunities
+            </p>
           </div>
 
           <div className="flex flex-col items-center gap-3 sm:gap-4 w-full max-w-sm sm:max-w-md">
