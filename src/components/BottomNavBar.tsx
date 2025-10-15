@@ -45,7 +45,7 @@ const BottomNavBar = () => {
   ].filter(item => item.show);
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-lg border-t border-white/10">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-t border-border/40 pb-[env(safe-area-inset-bottom)]">
       <div className="flex items-center justify-around h-16 px-2 max-w-screen-xl mx-auto">
         {navItems.map(({ path, icon: Icon, label }) => (
           <Link

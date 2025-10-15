@@ -10,6 +10,7 @@ import { Toaster } from './components/ui/toaster';
 
 import React, { Suspense, lazy } from 'react';
 import BottomNavBar from './components/BottomNavBar';
+import { InstallPrompt } from './components/InstallPrompt';
 
 // Page imports
 import Index from './pages/Index';
@@ -77,6 +78,7 @@ function App() {
                 </Routes>
               </Suspense>
               <BottomNavBar />
+              <InstallPrompt />
               <Toaster />
             </ModelGenerationProvider>
           </GoogleMapProvider>
