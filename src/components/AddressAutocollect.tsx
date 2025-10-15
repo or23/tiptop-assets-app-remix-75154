@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { MapPin, X, CheckCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { loadGoogleMaps } from '@/utils/googleMapsLoader';
 
 interface AddressAutocollectProps {
   onConfirm: (address: string, coordinates: google.maps.LatLngLiteral) => void;
@@ -25,6 +26,9 @@ const AddressAutocollect = ({ onConfirm, onDismiss, onEnterManually }: AddressAu
     setError(false);
 
     try {
+      // Ensure Google Maps is loaded first
+      await loadGoogleMaps();
+      
       // Get user's location
       const position = await new Promise<GeolocationPosition>((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(resolve, reject, {
@@ -41,15 +45,25 @@ const AddressAutocollect = ({ onConfirm, onDismiss, onEnterManually }: AddressAu
 
       setCoordinates(coords);
 
-      // Reverse geocode to get address
-      const geocoder = new google.maps.Geocoder();
-      const result = await geocoder.geocode({ location: coords });
-
-      if (result.results[0]) {
-        setDetectedAddress(result.results[0].formatted_address);
-      } else {
-        setError(true);
+      // Ensure Google Maps is loaded
+      if (!window.google?.maps) {
+        throw new Error('Google Maps not loaded');
       }
+
+      // Reverse geocode to get address using callback-based API
+      const geocoder = new google.maps.Geocoder();
+      
+      const address = await new Promise<string>((resolve, reject) => {
+        geocoder.geocode({ location: coords }, (results, status) => {
+          if (status === 'OK' && results && results[0]) {
+            resolve(results[0].formatted_address);
+          } else {
+            reject(new Error(`Geocoding failed with status: ${status}`));
+          }
+        });
+      });
+
+      setDetectedAddress(address);
     } catch (err) {
       console.error('Error detecting address:', err);
       setError(true);
