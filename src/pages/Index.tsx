@@ -218,8 +218,8 @@ const Index = () => {
         className="relative z-10 flex-1 flex flex-col items-center pb-24"
         style={{ filter: showLeadCapture ? 'blur(8px)' : 'none', pointerEvents: showLeadCapture ? 'none' : 'auto' }}
       >
-        {/* Mobile-First Header */}
-        <header className="w-full px-4 py-3 sm:py-4 flex justify-between items-center bg-card/80 backdrop-blur-xl border-b border-border/50 sticky top-0 z-40">
+        {/* Mobile-First Header - Hidden on mobile */}
+        <header className="hidden md:flex w-full px-4 py-3 sm:py-4 justify-between items-center bg-card/80 backdrop-blur-xl border-b border-border/50 sticky top-0 z-40">
           <Link to="/" className="text-xl sm:text-2xl font-bold text-primary hover:scale-105 transition-transform">
             tiptop
           </Link>
