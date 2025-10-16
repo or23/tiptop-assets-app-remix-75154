@@ -41,11 +41,11 @@ const DashboardSidebar = ({ properties, selectedPropertyId, onPropertySelect }: 
         )}
 
         {/* Mobile Sidebar - Full screen with scroll */}
-        <div className={`fixed left-0 top-0 bottom-0 w-[85vw] max-w-sm bg-card border-r border-border z-50 transform transition-transform duration-300 ease-out ${
+        <div className={`fixed left-0 top-0 bottom-0 w-[85vw] max-w-sm bg-card border-r border-border z-[60] transform transition-transform duration-300 ease-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         } flex flex-col`}>
           {/* Scrollable content area */}
-          <div className="flex-1 overflow-y-auto overscroll-contain">
+          <div className="flex-1 overflow-y-auto overscroll-contain pb-24 pb-[env(safe-area-inset-bottom)]">
             <div className="flex flex-col min-h-full">
               {/* Header Section */}
               <div className="flex-shrink-0 p-4 border-b border-border bg-card sticky top-0 z-10">
