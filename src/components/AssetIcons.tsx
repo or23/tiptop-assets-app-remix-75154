@@ -73,7 +73,7 @@ const AssetIcons = () => {
                       initial={{ opacity: 0, y: 4 }}
                       animate={{ opacity: hoveredIcon === Icon.name ? 1 : 0, y: hoveredIcon === Icon.name ? 0 : 4 }}
                       transition={{ duration: 0.2 }}
-                      className="text-xs text-foreground/80"
+                      className="text-xs text-white/90"
                     >
                       {Icon.name}
                     </motion.div>
