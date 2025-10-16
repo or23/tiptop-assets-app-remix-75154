@@ -88,6 +88,12 @@ const AddressAutocollect = ({ onConfirm, onDismiss, onEnterManually, redirectToH
     }
   };
 
+  const handleEnterManuallyClick = () => {
+    onEnterManually();
+    // Navigate to home page for manual entry
+    navigate('/', { replace: true });
+  };
+
   return (
     <AnimatePresence>
       <motion.div
@@ -177,7 +183,7 @@ const AddressAutocollect = ({ onConfirm, onDismiss, onEnterManually, redirectToH
                       Use This Address
                     </Button>
                     <Button
-                      onClick={onEnterManually}
+                      onClick={handleEnterManuallyClick}
                       variant="outline"
                       className="w-full mobile-touch-target"
                       size="lg"
@@ -191,7 +197,7 @@ const AddressAutocollect = ({ onConfirm, onDismiss, onEnterManually, redirectToH
               {/* Always show manual entry option */}
               {(loading || error) && (
                 <Button
-                  onClick={onEnterManually}
+                  onClick={handleEnterManuallyClick}
                   variant="ghost"
                   className="w-full text-gray-400"
                 >
