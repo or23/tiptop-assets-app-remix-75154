@@ -55,27 +55,30 @@ const AssetIcons = () => {
           <CarouselContent>
             {carouselIcons.map((Icon) => (
               <CarouselItem key={Icon.name} className="basis-1/4 md:basis-1/5 lg:basis-1/6">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3 }}
-                  className="p-1 relative"
-                  onMouseEnter={() => setHoveredIcon(Icon.name)}
-                  onMouseLeave={() => setHoveredIcon(null)}
-                >
-                  <div className="standardized-icon transition-transform hover:scale-110">
-                    <Icon.Component />
-                  </div>
-                  {hoveredIcon === Icon.name && (
+                <div className="flex flex-col items-center">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="p-1"
+                    onMouseEnter={() => setHoveredIcon(Icon.name)}
+                    onMouseLeave={() => setHoveredIcon(null)}
+                  >
+                    <div className="standardized-icon transition-transform hover:scale-110">
+                      <Icon.Component />
+                    </div>
+                  </motion.div>
+                  <div className="mt-2 h-5 flex items-center justify-center">
                     <motion.div
-                      initial={{ opacity: 0, y: 5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="absolute -top-12 left-1/2 -translate-x-1/2 bg-black/90 text-white text-xs px-3 py-1.5 rounded-lg whitespace-nowrap z-50 pointer-events-none"
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: hoveredIcon === Icon.name ? 1 : 0, y: hoveredIcon === Icon.name ? 0 : 4 }}
+                      transition={{ duration: 0.2 }}
+                      className="text-xs text-foreground/80"
                     >
                       {Icon.name}
                     </motion.div>
-                  )}
-                </motion.div>
+                  </div>
+                </div>
               </CarouselItem>
             ))}
           </CarouselContent>
