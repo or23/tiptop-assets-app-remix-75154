@@ -151,27 +151,6 @@ const EnhancedAdditionalAssetsCarousel = ({
           )}
           
           <div className="relative z-10 h-full p-4 flex flex-col">
-            {/* Select button at top right */}
-            <div className="flex justify-end mb-3">
-              <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium transition-all ${
-                isSelected 
-                  ? 'bg-white/30 text-white border border-white/40' 
-                  : 'bg-white/20 text-white/80 hover:bg-white/30 hover:text-white border border-white/20'
-              }`}>
-                {isSelected ? (
-                  <>
-                    <Check className="h-3 w-3" />
-                    <span>✓</span>
-                  </>
-                ) : (
-                  <>
-                    <Plus className="h-3 w-3" />
-                    <span>Select</span>
-                  </>
-                )}
-              </div>
-            </div>
-
             {/* Title */}
             <div className="mb-2">
               <h3 className="text-lg font-bold text-white line-clamp-2">{opportunity.title}</h3>
@@ -203,11 +182,32 @@ const EnhancedAdditionalAssetsCarousel = ({
 
             {/* Setup cost and ROI info if available */}
             {opportunity.setupCost && opportunity.setupCost > 0 && (
-              <div className="flex flex-col gap-1 text-xs text-white/80 text-center">
+              <div className="flex flex-col gap-1 text-xs text-white/80 text-center mb-3">
                 <span>Setup: <span className="text-white font-medium">${opportunity.setupCost}</span></span>
                 {opportunity.roi && <span>ROI: <span className="text-white font-medium">{opportunity.roi} mo</span></span>}
               </div>
             )}
+
+            {/* Select button at bottom right */}
+            <div className="flex justify-end mt-auto">
+              <div className={`flex items-center gap-1 px-3 py-2 rounded-full text-sm font-medium transition-all ${
+                isSelected 
+                  ? 'bg-white text-black shadow-lg' 
+                  : 'bg-white text-black hover:shadow-xl'
+              }`}>
+                {isSelected ? (
+                  <>
+                    <Check className="h-4 w-4" />
+                    <span>Selected</span>
+                  </>
+                ) : (
+                  <>
+                    <Plus className="h-4 w-4" />
+                    <span>Select</span>
+                  </>
+                )}
+              </div>
+            </div>
           </div>
           
           {/* Gradient overlay for depth */}
@@ -235,15 +235,23 @@ const EnhancedAdditionalAssetsCarousel = ({
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20"></div>
         
-        {/* Selection indicator */}
-        <div className="absolute top-2 right-2 z-10">
-          <div className={`transition-all duration-300 ${
-            isSelected ? 'bg-green-500 scale-110' : 'bg-white/20 border border-white/30'
-          } rounded-full p-1 shadow-lg`}>
+        {/* Selection indicator at bottom right */}
+        <div className="absolute bottom-3 right-3 z-10">
+          <div className={`flex items-center gap-1 px-3 py-2 rounded-full text-sm font-medium transition-all ${
+            isSelected 
+              ? 'bg-white text-black shadow-lg' 
+              : 'bg-white text-black hover:shadow-xl'
+          }`}>
             {isSelected ? (
-              <Check className="h-3 w-3 text-white" />
+              <>
+                <Check className="h-4 w-4" />
+                <span>Selected</span>
+              </>
             ) : (
-              <Plus className="h-3 w-3 text-white" />
+              <>
+                <Plus className="h-4 w-4" />
+                <span>Select</span>
+              </>
             )}
           </div>
         </div>
