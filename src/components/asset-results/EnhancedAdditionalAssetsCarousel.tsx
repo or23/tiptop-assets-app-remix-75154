@@ -435,8 +435,10 @@ const EnhancedAdditionalAssetsCarousel = ({
           </Select>
         </div>
       </div>
+        </CollapsibleContent>
+      </Collapsible>
       
-      {/* Summary Stats */}
+      {/* Summary Stats - Always Visible */}
       <div className="mt-3 sm:mt-4 p-3 sm:p-4 rounded-lg space-y-4 bg-white/5 border border-white/10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 text-center">
           <div>
@@ -483,8 +485,6 @@ const EnhancedAdditionalAssetsCarousel = ({
           />
         </div>
       </div>
-        </CollapsibleContent>
-      </Collapsible>
     </motion.div>
   );
 };
