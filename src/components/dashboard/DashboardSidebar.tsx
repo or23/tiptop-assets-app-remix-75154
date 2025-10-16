@@ -92,8 +92,8 @@ const DashboardSidebar = ({ properties, selectedPropertyId, onPropertySelect }: 
 
   return (
     <div 
-      className={`bg-card border-r border-border min-h-screen flex flex-col fixed left-0 top-0 z-40 transition-all duration-300 ease-in-out pb-20 ${
-        isCollapsed ? 'w-16' : 'w-64'
+      className={`bg-card border-r border-border min-h-screen flex flex-col fixed left-0 top-0 transition-all duration-300 ease-in-out pb-20 ${
+        isCollapsed ? 'w-16 z-40' : 'w-64 z-[70]'
       }`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
