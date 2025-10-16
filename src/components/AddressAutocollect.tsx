@@ -94,7 +94,7 @@ const AddressAutocollect = ({ onConfirm, onDismiss, onEnterManually, redirectToH
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"
+        className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[70] flex items-end sm:items-center justify-center p-0 sm:p-4"
       >
         <motion.div
           initial={{ y: 100, opacity: 0 }}
@@ -103,7 +103,7 @@ const AddressAutocollect = ({ onConfirm, onDismiss, onEnterManually, redirectToH
           className="w-full sm:max-w-md mb-[env(safe-area-inset-bottom)]"
         >
           <Card className="border-0 sm:border rounded-t-3xl sm:rounded-2xl bg-gradient-to-b from-gray-900 to-black border-white/10">
-            <CardContent className="p-6 pb-8 space-y-6">
+            <CardContent className="p-6 pb-24 space-y-6 pb-[env(safe-area-inset-bottom)]">
               {/* Close button */}
               <button
                 onClick={onDismiss}
@@ -155,7 +155,7 @@ const AddressAutocollect = ({ onConfirm, onDismiss, onEnterManually, redirectToH
 
               {/* Success State */}
               {detectedAddress && !loading && !error && (
-                <div className="space-y-4 pb-safe">
+                <div className="space-y-4">
                   <div className="p-4 rounded-lg bg-white/5 border border-white/10">
                     <div className="flex items-start gap-3">
                       <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
