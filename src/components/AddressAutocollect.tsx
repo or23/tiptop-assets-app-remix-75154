@@ -94,13 +94,13 @@ const AddressAutocollect = ({ onConfirm, onDismiss, onEnterManually, redirectToH
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[70] flex items-end sm:items-center justify-center p-0 sm:p-4"
+        className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 flex items-end sm:items-center justify-center p-0 sm:p-4"
       >
         <motion.div
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
-          className="w-full sm:max-w-md mb-[env(safe-area-inset-bottom)]"
+          className="w-full sm:max-w-md mb-20 mb-[calc(64px+env(safe-area-inset-bottom))]"
         >
           <Card className="border-0 sm:border rounded-t-3xl sm:rounded-2xl bg-gradient-to-b from-gray-900 to-black border-white/10">
             <CardContent className="p-6 pb-24 space-y-6 pb-[env(safe-area-inset-bottom)]">
