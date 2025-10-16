@@ -218,7 +218,18 @@ const Index = () => {
         className="relative z-10 flex-1 flex flex-col items-center pb-24"
         style={{ filter: showLeadCapture ? 'blur(8px)' : 'none', pointerEvents: showLeadCapture ? 'none' : 'auto' }}
       >
-        {/* Header removed - navigation via bottom bar */}
+        {/* Header - Transparent overlay with logo */}
+        <header className="w-full px-4 py-3 sm:py-4 flex justify-between items-center sticky top-0 z-40">
+          <Link to="/" className="text-xl sm:text-2xl font-bold text-primary hover:scale-105 transition-transform">
+            tiptop
+          </Link>
+          {user && (
+            <div className="flex items-center gap-2 text-sm">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <span className="text-muted-foreground hidden sm:inline">Connected</span>
+            </div>
+          )}
+        </header>
 
         {/* Main content - Mobile-first responsive */}
         <main className="flex-1 w-full flex flex-col items-center justify-start px-4 sm:px-6 transition-all duration-500">
