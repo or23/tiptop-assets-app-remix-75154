@@ -44,17 +44,17 @@ const AssetIcons = () => {
   return (
     <div className="relative w-full flex flex-col items-center">
       {/* Horizontal Carousel for Asset Icons */}
-      <div className="w-full max-w-3xl mb-8 pt-16 overflow-visible">
+      <div className="w-full max-w-3xl mb-8 overflow-visible">
         <Carousel
           opts={{
             align: "start",
             loop: true,
           }}
-          className="w-full px-8 overflow-visible"
+          className="w-full px-8"
         >
-          <CarouselContent className="overflow-visible">
+          <CarouselContent>
             {carouselIcons.map((Icon) => (
-              <CarouselItem key={Icon.name} className="basis-1/4 md:basis-1/5 lg:basis-1/6 overflow-visible">
+              <CarouselItem key={Icon.name} className="basis-1/4 md:basis-1/5 lg:basis-1/6">
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
