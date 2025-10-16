@@ -204,24 +204,6 @@ const AnalyzeButton = () => {
           {analysisError}
         </div>
       )}
-      
-      {!analysisStarted && !hasError && !isLoading && (
-        <p className="text-center text-sm text-gray-400 mt-2">
-          {!hasAddress ? (
-            <>📍 Enter an address above to start analysis</>
-          ) : !hasSelectedAddress ? (
-            isRetrying ? (
-              <>🔄 Selecting address automatically...</>
-            ) : (
-              <>⚠️ Please select your address from the dropdown suggestions<br/>
-              <span className="text-xs text-amber-400">Please click on your address again</span></>
-            )
-          ) : (
-            <></>
-          )
-          }
-        </p>
-      )}
     </div>
   );
 };
