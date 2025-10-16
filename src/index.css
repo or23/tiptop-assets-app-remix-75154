@@ -16,10 +16,10 @@
   --mobile-padding: 1rem;
   --desktop-padding: 2rem;
 
-  /* Primary brand color */
-  --primary: 267 83% 60%;
+  /* Primary brand color - Tiptop Purple */
+  --primary: 248 100% 75%;
   --primary-foreground: 210 40% 98%;
-  --primary-hover: 267 83% 55%;
+  --primary-hover: 248 100% 70%;
 
   /* Muted variants */
   --muted: 210 40% 94%;
@@ -46,7 +46,7 @@
   --input: 214.3 31.8% 91.4%;
 
   /* Ring color for focus states */
-  --ring: 267 83% 60%;
+  --ring: 248 100% 75%;
 
   /* Semantic colors */
   --destructive: 0 84.2% 60.2%;
@@ -77,9 +77,9 @@
   --card-foreground: 210 40% 98%;
   --popover: 222.2 84% 4.9%;
   --popover-foreground: 210 40% 98%;
-  --primary: 267 83% 60%;
+  --primary: 248 100% 75%;
   --primary-foreground: 222.2 47.4% 11.2%;
-  --primary-hover: 267 83% 55%;
+  --primary-hover: 248 100% 70%;
   --secondary: 217.2 32.6% 17.5%;
   --secondary-foreground: 210 40% 98%;
   --muted: 217.2 32.6% 17.5%;
@@ -90,7 +90,7 @@
   --destructive-foreground: 210 40% 98%;
   --border: 217.2 32.6% 17.5%;
   --input: 217.2 32.6% 17.5%;
-  --ring: 267 83% 60%;
+  --ring: 248 100% 75%;
   --chart-1: 220 70% 50%;
   --chart-2: 160 60% 45%;
   --chart-3: 30 80% 55%;
