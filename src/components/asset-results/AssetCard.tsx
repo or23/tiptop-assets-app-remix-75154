@@ -97,29 +97,8 @@ const AssetCard: React.FC<AssetCardProps> = ({
         
         <CardContent className="p-4 sm:p-5 md:p-6 relative z-10 h-full flex flex-col">
           {isMobile ? (
-            // Mobile layout: Title -> Description -> Icon -> Revenue
+            // Mobile layout: Title -> Description -> Icon -> Revenue -> Button at bottom
             <>
-              {/* Select button at top right */}
-              <div className="flex justify-end mb-3">
-                <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium transition-all ${
-                  isSelected 
-                    ? 'bg-white/30 text-white border border-white/40' 
-                    : 'bg-white/20 text-white/80 hover:bg-white/30 hover:text-white border border-white/20'
-                }`}>
-                  {isSelected ? (
-                    <>
-                      <Check className="h-3 w-3" />
-                      <span>✓</span>
-                    </>
-                  ) : (
-                    <>
-                      <Plus className="h-3 w-3" />
-                      <span>Select</span>
-                    </>
-                  )}
-                </div>
-              </div>
-
               {/* Title */}
               <div className="mb-2">
                 <h3 className="text-lg font-bold text-white line-clamp-2">{title}</h3>
@@ -151,42 +130,42 @@ const AssetCard: React.FC<AssetCardProps> = ({
 
               {/* Setup cost and ROI info if available */}
               {setupCost > 0 && (
-                <div className="flex flex-col gap-1 text-xs text-white/80 text-center">
+                <div className="flex flex-col gap-1 text-xs text-white/80 text-center mb-3">
                   <span>Setup: <span className="text-white font-medium">${setupCost}</span></span>
                   {roi && <span>ROI: <span className="text-white font-medium">{roi} mo</span></span>}
                 </div>
               )}
+
+              {/* Select button at bottom right */}
+              <div className="flex justify-end mt-auto">
+                <div className={`flex items-center gap-1 px-3 py-2 rounded-full text-sm font-medium transition-all ${
+                  isSelected 
+                    ? 'bg-white text-black shadow-lg' 
+                    : 'bg-white text-black hover:shadow-xl'
+                }`}>
+                  {isSelected ? (
+                    <>
+                      <Check className="h-4 w-4" />
+                      <span>Selected</span>
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="h-4 w-4" />
+                      <span>Select</span>
+                    </>
+                  )}
+                </div>
+              </div>
             </>
           ) : (
-            // Desktop layout: Keep original layout
+            // Desktop layout: Icon at top, button at bottom right
             <>
-              {/* Header with icon and select button */}
-              <div className="flex items-start justify-between mb-3 sm:mb-4">
+              {/* Header with icon */}
+              <div className="flex items-start mb-3 sm:mb-4">
                 <div className="p-2 sm:p-3 rounded-xl bg-white/20 backdrop-blur-sm">
                   <div className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8">
                     {iconComponent}
                   </div>
-                </div>
-                
-                {/* Select/Selected button - responsive */}
-                <div className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 py-1 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all ${
-                  isSelected 
-                    ? 'bg-white/30 text-white border border-white/40' 
-                    : 'bg-white/20 text-white/80 hover:bg-white/30 hover:text-white border border-white/20'
-                }`}>
-                  {isSelected ? (
-                    <>
-                      <Check className="h-3 w-3 sm:h-4 sm:w-4" />
-                      <span className="hidden sm:inline">Selected</span>
-                      <span className="sm:hidden">✓</span>
-                    </>
-                  ) : (
-                    <>
-                      <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
-                      <span className="hidden sm:inline">Click to select</span>
-                      <span className="sm:hidden">Select</span>
-                    </>
-                  )}
                 </div>
               </div>
               
@@ -215,6 +194,27 @@ const AssetCard: React.FC<AssetCardProps> = ({
                   {roi && <span>ROI: <span className="text-white font-medium">{roi} mo</span></span>}
                 </div>
               )}
+
+              {/* Select button at bottom right */}
+              <div className="flex justify-end mt-4">
+                <div className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  isSelected 
+                    ? 'bg-white text-black shadow-lg' 
+                    : 'bg-white text-black hover:shadow-xl'
+                }`}>
+                  {isSelected ? (
+                    <>
+                      <Check className="h-4 w-4" />
+                      <span>Selected</span>
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="h-4 w-4" />
+                      <span>Select</span>
+                    </>
+                  )}
+                </div>
+              </div>
             </>
           )}
         </CardContent>
