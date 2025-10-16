@@ -137,7 +137,7 @@ const SubmitProperty = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-black to-purple-900">
+    <div className="page-container flex flex-col bg-gradient-to-b from-black to-purple-900">
       {/* Header */}
       <header className="w-full p-4 md:p-6 flex justify-between items-center">
         <div 

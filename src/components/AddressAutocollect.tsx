@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { MapPin, X, CheckCircle } from 'lucide-react';
@@ -9,9 +10,11 @@ interface AddressAutocollectProps {
   onConfirm: (address: string, coordinates: google.maps.LatLngLiteral) => void;
   onDismiss: () => void;
   onEnterManually: () => void;
+  redirectToHome?: boolean;
 }
 
-const AddressAutocollect = ({ onConfirm, onDismiss, onEnterManually }: AddressAutocollectProps) => {
+const AddressAutocollect = ({ onConfirm, onDismiss, onEnterManually, redirectToHome = false }: AddressAutocollectProps) => {
+  const navigate = useNavigate();
   const [detectedAddress, setDetectedAddress] = useState<string | null>(null);
   const [coordinates, setCoordinates] = useState<google.maps.LatLngLiteral | null>(null);
   const [loading, setLoading] = useState(true);
@@ -75,6 +78,13 @@ const AddressAutocollect = ({ onConfirm, onDismiss, onEnterManually }: AddressAu
   const handleConfirm = () => {
     if (detectedAddress && coordinates) {
       onConfirm(detectedAddress, coordinates);
+      
+      // If redirectToHome is true, navigate to home page after setting the address
+      if (redirectToHome) {
+        setTimeout(() => {
+          navigate('/', { replace: true });
+        }, 100);
+      }
     }
   };
 
@@ -90,10 +100,10 @@ const AddressAutocollect = ({ onConfirm, onDismiss, onEnterManually }: AddressAu
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
-          className="w-full sm:max-w-md"
+          className="w-full sm:max-w-md mb-[env(safe-area-inset-bottom)]"
         >
           <Card className="border-0 sm:border rounded-t-3xl sm:rounded-2xl bg-gradient-to-b from-gray-900 to-black border-white/10">
-            <CardContent className="p-6 space-y-6">
+            <CardContent className="p-6 pb-8 space-y-6">
               {/* Close button */}
               <button
                 onClick={onDismiss}
@@ -145,7 +155,7 @@ const AddressAutocollect = ({ onConfirm, onDismiss, onEnterManually }: AddressAu
 
               {/* Success State */}
               {detectedAddress && !loading && !error && (
-                <div className="space-y-4">
+                <div className="space-y-4 pb-safe">
                   <div className="p-4 rounded-lg bg-white/5 border border-white/10">
                     <div className="flex items-start gap-3">
                       <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
@@ -161,14 +171,16 @@ const AddressAutocollect = ({ onConfirm, onDismiss, onEnterManually }: AddressAu
                   <div className="space-y-2">
                     <Button
                       onClick={handleConfirm}
-                      className="w-full bg-primary hover:bg-primary/90"
+                      className="w-full bg-primary hover:bg-primary/90 mobile-touch-target"
+                      size="lg"
                     >
                       Use This Address
                     </Button>
                     <Button
                       onClick={onEnterManually}
                       variant="outline"
-                      className="w-full"
+                      className="w-full mobile-touch-target"
+                      size="lg"
                     >
                       Enter Different Address
                     </Button>

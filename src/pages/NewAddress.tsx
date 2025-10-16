@@ -53,6 +53,7 @@ const NewAddress = () => {
           onConfirm={handleConfirmAddress}
           onDismiss={handleDismiss}
           onEnterManually={handleEnterManually}
+          redirectToHome={true}
         />
       )}
 
@@ -73,7 +74,7 @@ const NewAddress = () => {
       </header>
 
       {/* Content */}
-      <main className="relative z-10 p-4 pt-8 space-y-6">
+      <main className="relative z-10 p-4 pt-8 space-y-6 pb-32">
         <div className="text-center space-y-2 mb-8">
           <h2 className="text-xl sm:text-2xl font-bold">
             Analyze a New Property

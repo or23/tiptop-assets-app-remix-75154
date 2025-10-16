@@ -215,7 +215,7 @@ const Index = () => {
 
       {/* Content overlay - flex-1 to take available space */}
       <div 
-        className="relative z-10 flex-1 flex flex-col items-center"
+        className="relative z-10 flex-1 flex flex-col items-center pb-24"
         style={{ filter: showLeadCapture ? 'blur(8px)' : 'none', pointerEvents: showLeadCapture ? 'none' : 'auto' }}
       >
         {/* Mobile-First Header */}

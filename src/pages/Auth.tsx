@@ -33,7 +33,7 @@ const Auth = () => {
   }, [user, loading, signInWithGoogle, navigate]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black flex items-center justify-center p-4">
+    <div className="page-container bg-gradient-to-b from-gray-900 to-black flex items-center justify-center p-4">
       <Card className="w-full max-w-md text-center bg-black/20 border-white/10 backdrop-blur-sm">
         <CardContent className="pt-6">
           <div className="mb-6">

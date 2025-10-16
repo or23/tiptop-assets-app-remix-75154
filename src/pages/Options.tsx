@@ -99,7 +99,7 @@ const Options = () => {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-b from-[#1A1F2C] to-[#2d3748] flex flex-col items-center">
+    <div className="page-container relative overflow-hidden bg-gradient-to-b from-[#1A1F2C] to-[#2d3748] flex flex-col items-center">
       {/* Background glass effect */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-0 left-0 w-1/3 h-1/3 bg-purple-500/10 rounded-full blur-[100px]"></div>

@@ -337,7 +337,7 @@ const OnboardingChatbot = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="page-container bg-gray-50 flex flex-col">
       {/* Header with Dashboard Navigation */}
       <OnboardingHeader onboardingData={onboardingData} detectedAssets={detectedAssets} />
 

@@ -326,7 +326,7 @@ const EnhancedOnboardingChatbot = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 relative">
+    <div className="page-container bg-gradient-to-br from-background via-background to-muted/20 relative">
       {/* Header - Fixed and Glassy */}
       <div className="fixed top-0 left-0 right-0 z-[110] backdrop-blur-md bg-background/80 border-b border-border/20">
         <ChatbotHeader
