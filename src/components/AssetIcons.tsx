@@ -44,7 +44,7 @@ const AssetIcons = () => {
   return (
     <div className="relative w-full flex flex-col items-center">
       {/* Horizontal Carousel for Asset Icons */}
-      <div className="w-full max-w-3xl mb-8">
+      <div className="w-full max-w-3xl mb-8 overflow-visible">
         <Carousel
           opts={{
             align: "start",
@@ -68,9 +68,9 @@ const AssetIcons = () => {
                   </div>
                   {hoveredIcon === Icon.name && (
                     <motion.div
-                      initial={{ opacity: 0, y: -5 }}
+                      initial={{ opacity: 0, y: 5 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-black/90 text-white text-xs px-3 py-1.5 rounded-lg whitespace-nowrap z-10 pointer-events-none"
+                      className="absolute -top-12 left-1/2 -translate-x-1/2 bg-black/90 text-white text-xs px-3 py-1.5 rounded-lg whitespace-nowrap z-50 pointer-events-none"
                     >
                       {Icon.name}
                     </motion.div>
