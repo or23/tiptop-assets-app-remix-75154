@@ -3,6 +3,7 @@ import { useGoogleMap } from '@/contexts/GoogleMapContext';
 import './asset-icons/IconGlowEffect.css';
 import { motion } from 'framer-motion';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { useState } from 'react';
 
 // Import individual icon components
 import HouseIcon from './asset-icons/HouseIcon';
@@ -18,6 +19,7 @@ import SportsCourtIcon from './asset-icons/SportsCourtIcon';
 
 const AssetIcons = () => {
   const { isAnalyzing, analysisComplete, address } = useGoogleMap();
+  const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
   
   // Icons for carousel display
   const carouselIcons = [
@@ -57,11 +59,22 @@ const AssetIcons = () => {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.3 }}
-                  className="p-1"
+                  className="p-1 relative"
+                  onMouseEnter={() => setHoveredIcon(Icon.name)}
+                  onMouseLeave={() => setHoveredIcon(null)}
                 >
-                  <div className="standardized-icon">
+                  <div className="standardized-icon transition-transform hover:scale-110">
                     <Icon.Component />
                   </div>
+                  {hoveredIcon === Icon.name && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-black/90 text-white text-xs px-3 py-1.5 rounded-lg whitespace-nowrap z-10 pointer-events-none"
+                    >
+                      {Icon.name}
+                    </motion.div>
+                  )}
                 </motion.div>
               </CarouselItem>
             ))}
