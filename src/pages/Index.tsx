@@ -234,7 +234,7 @@ const Index = () => {
         {/* Main content - Mobile-first responsive */}
         <main className="flex-1 w-full flex flex-col items-center justify-start px-4 sm:px-6 transition-all duration-500">
           <div className={`text-center mb-4 sm:mb-6 mt-4 sm:mt-6 transform transition-all duration-500 ${isCollapsed ? 'scale-0 h-0 mb-0' : 'scale-100'}`}>
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2 drop-shadow-lg">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2 drop-shadow-lg">
               {isAnalyzing ? "Analyzing..." : "Monetize Your Home"}
             </h1>
             <p className="text-muted-foreground text-sm sm:text-base">
