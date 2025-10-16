@@ -92,20 +92,24 @@ const DashboardSidebar = ({ properties, selectedPropertyId, onPropertySelect }: 
 
   return (
     <div 
-      className={`bg-gray-900 text-white min-h-screen flex flex-col fixed left-0 top-0 z-40 transition-all duration-300 ease-in-out ${
+      className={`bg-card border-r border-border min-h-screen flex flex-col fixed left-0 top-0 z-40 transition-all duration-300 ease-in-out pb-20 ${
         isCollapsed ? 'w-16' : 'w-64'
       }`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <DashboardSidebarHeader 
-        properties={properties}
-        selectedPropertyId={selectedPropertyId}
-        onPropertySelect={onPropertySelect}
-        isCollapsed={isCollapsed}
-      />
-      <DashboardSidebarNavigation isCollapsed={isCollapsed} />
-      <DashboardSidebarBottomNav isCollapsed={isCollapsed} />
+      <div className="flex-1 overflow-y-auto">
+        <DashboardSidebarHeader 
+          properties={properties}
+          selectedPropertyId={selectedPropertyId}
+          onPropertySelect={onPropertySelect}
+          isCollapsed={isCollapsed}
+        />
+        <DashboardSidebarNavigation isCollapsed={isCollapsed} />
+      </div>
+      <div className="mt-auto border-t border-border">
+        <DashboardSidebarBottomNav isCollapsed={isCollapsed} />
+      </div>
     </div>
   );
 };
