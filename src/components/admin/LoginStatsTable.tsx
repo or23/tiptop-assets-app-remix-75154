@@ -161,20 +161,14 @@ export const LoginStatsTable = () => {
             }
           }
 
-          // Create display name with multiple fallbacks
+          // Create display name prioritizing user info over property
           let displayName = '';
           if (userName) {
             displayName = userName;
           } else if (userEmail && userEmail !== 'Unknown Email') {
-            displayName = userEmail.split('@')[0]; // Use part before @ as display name
-          } else if (propertyAddress) {
-            // Truncate long addresses for display
-            const truncatedAddress = propertyAddress.length > 40 
-              ? `${propertyAddress.substring(0, 40)}...` 
-              : propertyAddress;
-            displayName = `Property: ${truncatedAddress}`;
+            displayName = userEmail; // Show full email instead of property
           } else {
-            displayName = `User ${index + 1} (ID: ${stat.user_id.substring(0, 8)}...)`;
+            displayName = `User (ID: ${stat.user_id.substring(0, 8)}...)`;
           }
 
           console.log(`📊 [LOGIN-STATS] User ${index + 1}: ${displayName} (${stat.login_count} logins)`);
