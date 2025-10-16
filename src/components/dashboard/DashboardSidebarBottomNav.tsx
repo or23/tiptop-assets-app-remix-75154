@@ -24,14 +24,14 @@ const DashboardSidebarBottomNav = ({ isCollapsed = false }: DashboardSidebarBott
 
   return (
     <TooltipProvider>
-      <div className="border-t border-border bg-card/95 backdrop-blur-sm">
+      <div className="border-t border-white/10 bg-[hsl(222.2,84%,4.9%)]/95 backdrop-blur-sm">
         <div className={`p-4 flex items-center gap-2 ${isCollapsed ? 'flex-col' : 'justify-center flex-wrap'}`}>
           {/* Settings */}
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
                 to="/dashboard/settings"
-                className="p-3 rounded-xl hover:bg-muted transition-all duration-200 mobile-touch-target hover:scale-105"
+                className="p-3 rounded-xl hover:bg-white/10 transition-all duration-200 mobile-touch-target hover:scale-105 text-gray-300 hover:text-white"
               >
                 <Settings size={20} />
               </Link>
@@ -46,7 +46,7 @@ const DashboardSidebarBottomNav = ({ isCollapsed = false }: DashboardSidebarBott
             <TooltipTrigger asChild>
               <Link
                 to="/dashboard/account"
-                className="p-3 rounded-xl hover:bg-muted transition-all duration-200 mobile-touch-target hover:scale-105"
+                className="p-3 rounded-xl hover:bg-white/10 transition-all duration-200 mobile-touch-target hover:scale-105 text-gray-300 hover:text-white"
               >
                 <User size={20} />
               </Link>
@@ -62,7 +62,7 @@ const DashboardSidebarBottomNav = ({ isCollapsed = false }: DashboardSidebarBott
               <TooltipTrigger asChild>
                 <Link
                   to="/dashboard/admin"
-                  className="p-3 rounded-xl hover:bg-muted transition-all duration-200 mobile-touch-target hover:scale-105"
+                  className="p-3 rounded-xl hover:bg-white/10 transition-all duration-200 mobile-touch-target hover:scale-105 text-gray-300 hover:text-white"
                 >
                   <Shield size={20} />
                 </Link>

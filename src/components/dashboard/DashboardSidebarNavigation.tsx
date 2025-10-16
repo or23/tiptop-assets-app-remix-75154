@@ -133,7 +133,7 @@ const DashboardSidebarNavigation = ({ isCollapsed = false }: DashboardSidebarNav
         <div className="mb-6">
           <h3 className={cn(
             "text-xs font-semibold uppercase tracking-wider mb-3",
-            isCollapsed ? "sr-only" : "text-muted-foreground"
+            isCollapsed ? "sr-only" : "text-gray-400"
           )}>
             Main
           </h3>
@@ -150,7 +150,7 @@ const DashboardSidebarNavigation = ({ isCollapsed = false }: DashboardSidebarNav
                         'flex items-center justify-center p-3 rounded-xl text-sm transition-all duration-200 group mb-2 mobile-touch-target',
                         isActive 
                           ? 'bg-primary text-primary-foreground shadow-lg scale-105' 
-                          : 'text-muted-foreground hover:bg-muted hover:text-foreground hover:scale-105'
+                          : 'text-gray-300 hover:bg-white/10 hover:text-white hover:scale-105'
                       )}
                     >
                       <item.icon size={20} />
@@ -171,7 +171,7 @@ const DashboardSidebarNavigation = ({ isCollapsed = false }: DashboardSidebarNav
                   'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group mb-2 mobile-touch-target',
                   isActive 
                     ? 'bg-primary text-primary-foreground shadow-lg' 
-                    : 'text-foreground hover:bg-muted'
+                    : 'text-white hover:bg-white/10'
                 )}
               >
                 <item.icon size={20} className="flex-shrink-0" />
@@ -190,7 +190,7 @@ const DashboardSidebarNavigation = ({ isCollapsed = false }: DashboardSidebarNav
               <CollapsibleTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="w-full justify-between p-0 h-auto font-bold text-muted-foreground uppercase tracking-wider text-xs hover:text-foreground mb-3"
+                  className="w-full justify-between p-0 h-auto font-bold text-gray-400 uppercase tracking-wider text-xs hover:text-white mb-3"
                 >
                   Assets
                   {isAssetsOpen ? (
@@ -212,7 +212,7 @@ const DashboardSidebarNavigation = ({ isCollapsed = false }: DashboardSidebarNav
                         'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group mobile-touch-target',
                         isActive 
                           ? 'bg-primary text-primary-foreground shadow-lg' 
-                          : 'text-foreground hover:bg-muted'
+                          : 'text-white hover:bg-white/10'
                       )}
                     >
                       <item.icon size={20} className="flex-shrink-0" />
@@ -264,7 +264,7 @@ const DashboardSidebarNavigation = ({ isCollapsed = false }: DashboardSidebarNav
         {/* Tools Section */}
         <div className="mb-4">
           {!isCollapsed && (
-            <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Tools</h3>
+            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Tools</h3>
           )}
           {toolsItems.map((item) => {
             const isActive = location.pathname === item.href;
@@ -279,7 +279,7 @@ const DashboardSidebarNavigation = ({ isCollapsed = false }: DashboardSidebarNav
                         'flex items-center justify-center p-3 rounded-xl text-sm transition-all duration-200 group mb-2 mobile-touch-target',
                         isActive 
                           ? 'bg-primary text-primary-foreground shadow-lg scale-105' 
-                          : 'text-muted-foreground hover:bg-muted hover:text-foreground hover:scale-105'
+                          : 'text-gray-300 hover:bg-white/10 hover:text-white hover:scale-105'
                       )}
                     >
                       <item.icon size={20} />
@@ -300,14 +300,14 @@ const DashboardSidebarNavigation = ({ isCollapsed = false }: DashboardSidebarNav
                   'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group mb-2 mobile-touch-target',
                   isActive 
                     ? 'bg-primary text-primary-foreground shadow-lg' 
-                    : 'text-foreground hover:bg-muted'
+                    : 'text-white hover:bg-white/10'
                 )}
               >
                 <item.icon size={20} className="flex-shrink-0" />
                 <div className="flex-1 min-w-0">
                   <div className="truncate font-medium">{item.name}</div>
                   {item.description && (
-                    <div className="text-xs text-muted-foreground truncate">
+                    <div className="text-xs text-gray-400 truncate">
                       {item.description}
                     </div>
                   )}

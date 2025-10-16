@@ -41,25 +41,25 @@ const DashboardSidebar = ({ properties, selectedPropertyId, onPropertySelect }: 
         )}
 
         {/* Mobile Sidebar - Full screen with scroll */}
-        <div className={`fixed left-0 top-0 bottom-0 w-[85vw] max-w-sm bg-card border-r border-border z-[60] transform transition-transform duration-300 ease-out ${
+        <div className={`fixed left-0 top-0 bottom-0 w-[85vw] max-w-sm bg-[hsl(222.2,84%,4.9%)] border-r border-white/10 z-[60] transform transition-transform duration-300 ease-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         } flex flex-col`}>
           {/* Scrollable content area */}
           <div className="flex-1 overflow-y-auto overscroll-contain pb-24 pb-[env(safe-area-inset-bottom)]">
             <div className="flex flex-col min-h-full">
               {/* Header Section */}
-              <div className="flex-shrink-0 p-4 border-b border-border bg-card sticky top-0 z-10">
+              <div className="flex-shrink-0 p-4 border-b border-white/10 bg-[hsl(222.2,84%,4.9%)] sticky top-0 z-10">
                 <div className="flex items-center justify-between mb-3">
                   <h1 className="text-2xl font-bold text-primary">tiptop</h1>
                   <button
                     onClick={() => setIsOpen(false)}
-                    className="p-2 hover:bg-muted rounded-lg transition-colors mobile-touch-target"
+                    className="p-2 hover:bg-white/10 rounded-lg transition-colors mobile-touch-target text-white"
                     aria-label="Close menu"
                   >
                     <X className="h-5 w-5" />
                   </button>
                 </div>
-                <p className="text-sm text-muted-foreground">Property Dashboard</p>
+                <p className="text-sm text-gray-400">Property Dashboard</p>
               </div>
 
               {/* Property Header - if exists */}
@@ -78,7 +78,7 @@ const DashboardSidebar = ({ properties, selectedPropertyId, onPropertySelect }: 
               </div>
               
               {/* Bottom Navigation - Sticky at bottom when scrolling */}
-              <div className="flex-shrink-0 sticky bottom-0 bg-card border-t border-border mt-auto">
+              <div className="flex-shrink-0 sticky bottom-0 bg-[hsl(222.2,84%,4.9%)] border-t border-white/10 mt-auto">
                 <DashboardSidebarBottomNav isCollapsed={false} />
               </div>
             </div>
@@ -92,7 +92,7 @@ const DashboardSidebar = ({ properties, selectedPropertyId, onPropertySelect }: 
 
   return (
     <div 
-      className={`bg-card border-r border-border fixed left-0 top-0 bottom-0 flex flex-col transition-all duration-300 ease-in-out ${
+      className={`bg-[hsl(222.2,84%,4.9%)] border-r border-white/10 fixed left-0 top-0 bottom-0 flex flex-col transition-all duration-300 ease-in-out ${
         isCollapsed ? 'w-16 z-40' : 'w-64 z-[70]'
       }`}
       onMouseEnter={() => setIsHovered(true)}
@@ -110,7 +110,7 @@ const DashboardSidebar = ({ properties, selectedPropertyId, onPropertySelect }: 
       </div>
       
       {/* Fixed bottom navigation */}
-      <div className="flex-shrink-0 border-t border-border bg-card">
+      <div className="flex-shrink-0 border-t border-white/10 bg-[hsl(222.2,84%,4.9%)]">
         <DashboardSidebarBottomNav isCollapsed={isCollapsed} />
       </div>
     </div>
