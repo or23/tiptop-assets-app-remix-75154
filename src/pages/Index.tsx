@@ -193,8 +193,8 @@ const Index = () => {
       {/* Journey Tracker */}
       <JourneyTracker />
 
-      {/* Google Map as background */}
-      <GoogleMap />
+      {/* Google Map as background - hidden on mobile until address entered */}
+      {(!isMobile || hasAddress) && <GoogleMap />}
 
       {/* Data Sync Notification Handler */}
       <DataSyncNotification />
