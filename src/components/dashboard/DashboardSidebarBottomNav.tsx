@@ -24,16 +24,16 @@ const DashboardSidebarBottomNav = ({ isCollapsed = false }: DashboardSidebarBott
 
   return (
     <TooltipProvider>
-      <div className="border-t border-gray-800 bg-gray-900">
-        <div className={`p-4 flex items-center ${isCollapsed ? 'flex-col gap-2' : 'justify-center gap-2'}`}>
+      <div className="border-t border-border bg-card/95 backdrop-blur-sm">
+        <div className={`p-4 flex items-center gap-2 ${isCollapsed ? 'flex-col' : 'justify-center flex-wrap'}`}>
           {/* Settings */}
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
                 to="/dashboard/settings"
-                className="p-2.5 rounded-lg text-gray-300 hover:bg-gray-800 hover:text-white transition-colors mobile-touch-target"
+                className="p-3 rounded-xl hover:bg-muted transition-all duration-200 mobile-touch-target hover:scale-105"
               >
-                <Settings size={18} />
+                <Settings size={20} />
               </Link>
             </TooltipTrigger>
             <TooltipContent side={isCollapsed ? "right" : "top"}>
@@ -46,9 +46,9 @@ const DashboardSidebarBottomNav = ({ isCollapsed = false }: DashboardSidebarBott
             <TooltipTrigger asChild>
               <Link
                 to="/dashboard/account"
-                className="p-2.5 rounded-lg text-gray-300 hover:bg-gray-800 hover:text-white transition-colors mobile-touch-target"
+                className="p-3 rounded-xl hover:bg-muted transition-all duration-200 mobile-touch-target hover:scale-105"
               >
-                <User size={18} />
+                <User size={20} />
               </Link>
             </TooltipTrigger>
             <TooltipContent side={isCollapsed ? "right" : "top"}>
@@ -62,9 +62,9 @@ const DashboardSidebarBottomNav = ({ isCollapsed = false }: DashboardSidebarBott
               <TooltipTrigger asChild>
                 <Link
                   to="/dashboard/admin"
-                  className="p-2.5 rounded-lg text-gray-300 hover:bg-gray-800 hover:text-white transition-colors mobile-touch-target"
+                  className="p-3 rounded-xl hover:bg-muted transition-all duration-200 mobile-touch-target hover:scale-105"
                 >
-                  <Shield size={18} />
+                  <Shield size={20} />
                 </Link>
               </TooltipTrigger>
               <TooltipContent side={isCollapsed ? "right" : "top"}>
@@ -80,9 +80,9 @@ const DashboardSidebarBottomNav = ({ isCollapsed = false }: DashboardSidebarBott
                 variant="ghost"
                 size="sm"
                 onClick={handleSignOut}
-                className="p-2.5 h-auto text-red-400 hover:bg-red-900/20 hover:text-red-300 transition-colors mobile-touch-target"
+                className="p-3 h-auto text-destructive hover:bg-destructive/10 transition-all duration-200 mobile-touch-target hover:scale-105"
               >
-                <LogOut size={18} />
+                <LogOut size={20} />
               </Button>
             </TooltipTrigger>
             <TooltipContent side={isCollapsed ? "right" : "top"}>

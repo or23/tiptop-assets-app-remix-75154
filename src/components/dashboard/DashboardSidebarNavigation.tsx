@@ -128,103 +128,109 @@ const DashboardSidebarNavigation = ({ isCollapsed = false }: DashboardSidebarNav
 
   return (
     <TooltipProvider>
-      <nav className={`p-3 space-y-1 ${isCollapsed ? 'px-2' : ''}`}>
-          {/* Main Navigation Section - Always Visible */}
-          <div className="mb-4">
-            {mainNavigationItems.map((item) => {
-              const isActive = location.pathname === item.href;
-              
-              if (isCollapsed) {
-                return (
-                  <Tooltip key={item.name}>
-                    <TooltipTrigger asChild>
-                      <Link
-                        to={item.href}
-                        className={cn(
-                          'flex items-center justify-center p-2 rounded-lg text-sm transition-colors group mb-1',
-                          isActive 
-                            ? 'bg-tiptop-purple text-white' 
-                            : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                        )}
-                      >
-                        <item.icon size={18} />
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent side="right">
-                      <p>{item.name}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                );
-              }
-              
+      <nav className={`p-4 space-y-1 ${isCollapsed ? 'px-2' : ''}`}>
+        {/* Main Navigation Section - Always Visible */}
+        <div className="mb-6">
+          <h3 className={cn(
+            "text-xs font-semibold uppercase tracking-wider mb-3",
+            isCollapsed ? "sr-only" : "text-muted-foreground"
+          )}>
+            Main
+          </h3>
+          {mainNavigationItems.map((item) => {
+            const isActive = location.pathname === item.href;
+            
+            if (isCollapsed) {
               return (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={cn(
-                    'flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors group mb-1',
-                    isActive 
-                      ? 'bg-tiptop-purple text-white' 
-                      : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                  )}
-                >
-                  <item.icon size={18} />
-                  <div className="flex-1">
-                    <div className="font-medium">{item.name}</div>
-                  </div>
-                </Link>
+                <Tooltip key={item.name}>
+                  <TooltipTrigger asChild>
+                    <Link
+                      to={item.href}
+                      className={cn(
+                        'flex items-center justify-center p-3 rounded-xl text-sm transition-all duration-200 group mb-2 mobile-touch-target',
+                        isActive 
+                          ? 'bg-primary text-primary-foreground shadow-lg scale-105' 
+                          : 'text-muted-foreground hover:bg-muted hover:text-foreground hover:scale-105'
+                      )}
+                    >
+                      <item.icon size={20} />
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">
+                    <p>{item.name}</p>
+                  </TooltipContent>
+                </Tooltip>
               );
-            })}
-          </div>
+            }
+            
+            return (
+              <Link
+                key={item.name}
+                to={item.href}
+                className={cn(
+                  'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group mb-2 mobile-touch-target',
+                  isActive 
+                    ? 'bg-primary text-primary-foreground shadow-lg' 
+                    : 'text-foreground hover:bg-muted'
+                )}
+              >
+                <item.icon size={20} className="flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <div className="truncate">{item.name}</div>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
 
-          {/* Collapsible Assets Section */}
-          {!isCollapsed && (
-            <Collapsible open={isAssetsOpen} onOpenChange={handleAssetsToggle}>
-              <div className="mb-4">
-                <CollapsibleTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="w-full justify-between p-0 h-auto font-semibold text-gray-400 uppercase tracking-wider text-xs hover:text-gray-300 mb-3"
-                  >
-                    Assets
-                    {isAssetsOpen ? (
-                      <ChevronUp className="h-4 w-4" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4" />
-                    )}
-                  </Button>
-                </CollapsibleTrigger>
-                
-                <CollapsibleContent className="space-y-1 max-h-60 overflow-y-auto">
-                  {assetNavigationItems.map((item) => {
-                    const isActive = location.pathname === item.href;
-                    return (
-                      <Link
-                        key={item.name}
-                        to={item.href}
-                        className={cn(
-                          'flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors group mb-1',
-                          isActive 
-                            ? 'bg-tiptop-purple text-white' 
-                            : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                        )}
-                      >
-                        <item.icon size={18} />
-                        <div className="flex-1 min-w-0">
-                          <div className="font-medium truncate">{item.name}</div>
-                        </div>
-                        {item.badge && (
-                          <Badge variant="secondary" className="text-xs px-1.5 py-0.5 h-5 text-[10px] font-medium shrink-0">
-                            {item.badge}
-                          </Badge>
-                        )}
-                      </Link>
-                    );
-                  })}
-                </CollapsibleContent>
-              </div>
-            </Collapsible>
-          )}
+        {/* Collapsible Assets Section */}
+        {!isCollapsed && (
+          <Collapsible open={isAssetsOpen} onOpenChange={handleAssetsToggle} className="mb-6">
+            <div>
+              <CollapsibleTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-between p-0 h-auto font-bold text-muted-foreground uppercase tracking-wider text-xs hover:text-foreground mb-3"
+                >
+                  Assets
+                  {isAssetsOpen ? (
+                    <ChevronUp className="h-4 w-4" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4" />
+                  )}
+                </Button>
+              </CollapsibleTrigger>
+              
+              <CollapsibleContent className="space-y-2">
+                {assetNavigationItems.map((item) => {
+                  const isActive = location.pathname === item.href;
+                  return (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className={cn(
+                        'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group mobile-touch-target',
+                        isActive 
+                          ? 'bg-primary text-primary-foreground shadow-lg' 
+                          : 'text-foreground hover:bg-muted'
+                      )}
+                    >
+                      <item.icon size={20} className="flex-shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <div className="truncate">{item.name}</div>
+                      </div>
+                      {item.badge && (
+                        <Badge variant="secondary" className="text-[10px] px-2 py-0.5 h-5 font-semibold shrink-0">
+                          {item.badge}
+                        </Badge>
+                      )}
+                    </Link>
+                  );
+                })}
+              </CollapsibleContent>
+            </div>
+          </Collapsible>
+        )}
           
           {/* Collapsed Assets - Show as icons with tooltips */}
           {isCollapsed && (
@@ -255,62 +261,62 @@ const DashboardSidebarNavigation = ({ isCollapsed = false }: DashboardSidebarNav
             </div>
           )}
 
-          {/* Tools Section */}
-          <div className="mb-4">
-            {!isCollapsed && (
-              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Tools</h3>
-            )}
-            {toolsItems.map((item) => {
-              const isActive = location.pathname === item.href;
-              
-              if (isCollapsed) {
-                return (
-                  <Tooltip key={item.name}>
-                    <TooltipTrigger asChild>
-                      <Link
-                        to={item.href}
-                        className={cn(
-                          'flex items-center justify-center p-2 rounded-lg text-sm transition-colors group mb-1',
-                          isActive 
-                            ? 'bg-tiptop-purple text-white' 
-                            : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                        )}
-                      >
-                        <item.icon size={18} />
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent side="right">
-                      <p>{item.name}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                );
-              }
-              
+        {/* Tools Section */}
+        <div className="mb-4">
+          {!isCollapsed && (
+            <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Tools</h3>
+          )}
+          {toolsItems.map((item) => {
+            const isActive = location.pathname === item.href;
+            
+            if (isCollapsed) {
               return (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={cn(
-                    'flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors group mb-1',
-                    isActive 
-                      ? 'bg-tiptop-purple text-white' 
-                      : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                  )}
-                >
-                  <item.icon size={18} />
-                  <div className="flex-1">
-                    <div className="font-medium">{item.name}</div>
-                    {item.description && (
-                      <div className="text-xs text-gray-500 group-hover:text-gray-400">
-                        {item.description}
-                      </div>
-                    )}
-                  </div>
-                </Link>
+                <Tooltip key={item.name}>
+                  <TooltipTrigger asChild>
+                    <Link
+                      to={item.href}
+                      className={cn(
+                        'flex items-center justify-center p-3 rounded-xl text-sm transition-all duration-200 group mb-2 mobile-touch-target',
+                        isActive 
+                          ? 'bg-primary text-primary-foreground shadow-lg scale-105' 
+                          : 'text-muted-foreground hover:bg-muted hover:text-foreground hover:scale-105'
+                      )}
+                    >
+                      <item.icon size={20} />
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">
+                    <p>{item.name}</p>
+                  </TooltipContent>
+                </Tooltip>
               );
-            })}
-          </div>
-        </nav>
+            }
+            
+            return (
+              <Link
+                key={item.name}
+                to={item.href}
+                className={cn(
+                  'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group mb-2 mobile-touch-target',
+                  isActive 
+                    ? 'bg-primary text-primary-foreground shadow-lg' 
+                    : 'text-foreground hover:bg-muted'
+                )}
+              >
+                <item.icon size={20} className="flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <div className="truncate font-medium">{item.name}</div>
+                  {item.description && (
+                    <div className="text-xs text-muted-foreground truncate">
+                      {item.description}
+                    </div>
+                  )}
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
     </TooltipProvider>
   );
 };
