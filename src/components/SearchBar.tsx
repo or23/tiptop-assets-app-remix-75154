@@ -55,6 +55,7 @@ const SearchBar = ({ isCollapsed }: SearchBarProps) => {
         <PlaceAutocompleteElement
           className="flex-1 min-w-0 relative z-20"
           placeholder="Search your address"
+          value={address}
           onSelect={({ address: selectedAddress, coordinates }) => {
             // Only apply selection (centers map and sets zoom) - don't start analysis
             applySelectedAddress(selectedAddress, coordinates);

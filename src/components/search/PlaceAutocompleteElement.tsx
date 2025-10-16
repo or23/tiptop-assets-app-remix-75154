@@ -11,11 +11,19 @@ interface Props {
   onSelect: (selection: PlaceSelection) => void;
   placeholder?: string;
   className?: string;
+  value?: string;
 }
 
-const PlaceAutocompleteElement: React.FC<Props> = ({ onSelect, placeholder = 'Search your address', className }) => {
+const PlaceAutocompleteElement: React.FC<Props> = ({ onSelect, placeholder = 'Search your address', className, value }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
+
+  // Update input value when controlled value changes
+  useEffect(() => {
+    if (inputRef.current && value !== undefined) {
+      inputRef.current.value = value;
+    }
+  }, [value]);
 
   useEffect(() => {
     const init = async () => {
