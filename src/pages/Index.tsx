@@ -189,7 +189,7 @@ const Index = () => {
   const showBanner = status !== 'idle' && (status === 'generating' || status === 'error');
 
   return (
-    <div className="min-h-screen relative overflow-hidden flex flex-col pb-16" style={{ background: 'linear-gradient(to bottom right, #1e293b, #111827, #000000)' }}>
+    <div className="page-container relative overflow-hidden flex flex-col" style={{ background: 'linear-gradient(to bottom right, #1e293b, #111827, #000000)' }}>
       {/* Journey Tracker */}
       <JourneyTracker />
 
@@ -218,31 +218,31 @@ const Index = () => {
         className="relative z-10 flex-1 flex flex-col items-center"
         style={{ filter: showLeadCapture ? 'blur(8px)' : 'none', pointerEvents: showLeadCapture ? 'none' : 'auto' }}
       >
-        {/* Simplified Mobile Header */}
-        <header className="w-full p-4 flex justify-between items-center bg-gray-900/50 backdrop-blur-lg">
-          <Link to="/" className="text-2xl font-bold text-primary hover:scale-105 transition-transform">
+        {/* Mobile-First Header */}
+        <header className="w-full px-4 py-3 sm:py-4 flex justify-between items-center bg-card/80 backdrop-blur-xl border-b border-border/50 sticky top-0 z-40">
+          <Link to="/" className="text-xl sm:text-2xl font-bold text-primary hover:scale-105 transition-transform">
             tiptop
           </Link>
           {user && (
-            <div className="flex items-center gap-2 text-white text-sm">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-gray-300">Connected</span>
+            <div className="flex items-center gap-2 text-sm">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <span className="text-muted-foreground hidden sm:inline">Connected</span>
             </div>
           )}
         </header>
 
-        {/* Main content - App-like mobile experience */}
-        <main className="flex-1 w-full flex flex-col items-center justify-start px-4 transition-all duration-500">
-          <div className={`text-center mb-6 transform transition-all duration-500 ${isCollapsed ? 'scale-0 h-0 mb-0' : 'scale-100'}`}>
-            <h1 className="text-2xl font-bold text-white mb-2 drop-shadow-lg">
+        {/* Main content - Mobile-first responsive */}
+        <main className="flex-1 w-full flex flex-col items-center justify-start px-4 sm:px-6 transition-all duration-500">
+          <div className={`text-center mb-4 sm:mb-6 mt-4 sm:mt-6 transform transition-all duration-500 ${isCollapsed ? 'scale-0 h-0 mb-0' : 'scale-100'}`}>
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground mb-2 drop-shadow-lg">
               {isAnalyzing ? "🏡 Analyzing..." : "🏡 Monetize Your Home"}
             </h1>
-            <p className="text-gray-400 text-sm">
+            <p className="text-muted-foreground text-sm sm:text-base">
               Discover hidden revenue opportunities
             </p>
           </div>
 
-          <div className="flex flex-col items-center gap-3 sm:gap-4 w-full max-w-sm sm:max-w-md">
+          <div className="flex flex-col items-center gap-3 sm:gap-4 w-full max-w-md sm:max-w-lg">
             <SearchBar isCollapsed={isCollapsed} />
             {!isAnalyzing && !analysisComplete && <AnalyzeButton />}
           </div>
