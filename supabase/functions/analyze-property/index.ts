@@ -1,5 +1,5 @@
 
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.43.1';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.7';
 import { corsHeaders } from '../_shared/cors.ts';
 import { analyzeImage } from './imageAnalysis.ts';
 import { generatePropertyAnalysis } from './propertyAnalysis.ts';
