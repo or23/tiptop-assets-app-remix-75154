@@ -128,8 +128,7 @@ const DashboardSidebarNavigation = ({ isCollapsed = false }: DashboardSidebarNav
 
   return (
     <TooltipProvider>
-      <div className="flex-1 overflow-y-auto min-h-0">
-        <nav className={`p-3 space-y-1 ${isCollapsed ? 'px-2' : ''}`}>
+      <nav className={`p-3 space-y-1 ${isCollapsed ? 'px-2' : ''}`}>
           {/* Main Navigation Section - Always Visible */}
           <div className="mb-4">
             {mainNavigationItems.map((item) => {
@@ -312,7 +311,6 @@ const DashboardSidebarNavigation = ({ isCollapsed = false }: DashboardSidebarNav
             })}
           </div>
         </nav>
-      </div>
     </TooltipProvider>
   );
 };
