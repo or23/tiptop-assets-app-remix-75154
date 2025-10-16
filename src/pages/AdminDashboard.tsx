@@ -12,6 +12,7 @@ import PropertyManagement from '@/components/admin/PropertyManagement';
 import PartnersSection from '@/components/admin/PartnersSection';
 import { VisitorAnalyticsSection } from '@/components/admin/VisitorAnalyticsSection';
 import { LeadsSection } from '@/components/admin/LeadsSection';
+import { AdminRevenueSection } from '@/components/admin/AdminRevenueSection';
 import { useToast } from '@/hooks/use-toast';
 import { motion } from 'framer-motion';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -246,6 +247,7 @@ const AdminDashboard = () => {
         <Tabs defaultValue={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="inline-flex h-auto flex-wrap gap-2 bg-transparent p-0">
             <TabsTrigger value="overview" className="px-4 py-2">Overview</TabsTrigger>
+            <TabsTrigger value="revenue" className="px-4 py-2">Revenue</TabsTrigger>
             <TabsTrigger value="visitors" className="px-4 py-2">Visitor Analytics</TabsTrigger>
             <TabsTrigger value="leads" className="px-4 py-2">Leads</TabsTrigger>
             <TabsTrigger value="users" className="px-4 py-2">User Analytics</TabsTrigger>
@@ -365,6 +367,10 @@ const AdminDashboard = () => {
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+          
+          <TabsContent value="revenue" className="space-y-8">
+            <AdminRevenueSection />
           </TabsContent>
           
           <TabsContent value="visitors" className="space-y-8">

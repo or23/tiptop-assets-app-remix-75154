@@ -46,33 +46,51 @@ export type Database = {
       }
       affiliate_earnings: {
         Row: {
+          commission_rate: number | null
           created_at: string | null
           earnings_amount: number | null
           id: string
+          is_verified: boolean | null
+          metadata: Json | null
           provider_name: string | null
           source: string | null
           status: string | null
+          tiptop_revenue: number | null
+          transaction_type: string | null
           updated_at: string | null
+          user_earnings: number | null
           user_id: string
         }
         Insert: {
+          commission_rate?: number | null
           created_at?: string | null
           earnings_amount?: number | null
           id?: string
+          is_verified?: boolean | null
+          metadata?: Json | null
           provider_name?: string | null
           source?: string | null
           status?: string | null
+          tiptop_revenue?: number | null
+          transaction_type?: string | null
           updated_at?: string | null
+          user_earnings?: number | null
           user_id: string
         }
         Update: {
+          commission_rate?: number | null
           created_at?: string | null
           earnings_amount?: number | null
           id?: string
+          is_verified?: boolean | null
+          metadata?: Json | null
           provider_name?: string | null
           source?: string | null
           status?: string | null
+          tiptop_revenue?: number | null
+          transaction_type?: string | null
           updated_at?: string | null
+          user_earnings?: number | null
           user_id?: string
         }
         Relationships: []
@@ -620,6 +638,51 @@ export type Database = {
           referral_link?: string | null
           setup_complexity?: string | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      provider_commissions: {
+        Row: {
+          api_endpoint: string | null
+          api_key_required: boolean | null
+          created_at: string | null
+          fixed_fee_amount: number | null
+          has_api: boolean | null
+          id: string
+          is_active: boolean | null
+          payment_model: string
+          provider_name: string
+          tiptop_commission_rate: number
+          updated_at: string | null
+          user_earning_rate: number
+        }
+        Insert: {
+          api_endpoint?: string | null
+          api_key_required?: boolean | null
+          created_at?: string | null
+          fixed_fee_amount?: number | null
+          has_api?: boolean | null
+          id?: string
+          is_active?: boolean | null
+          payment_model?: string
+          provider_name: string
+          tiptop_commission_rate?: number
+          updated_at?: string | null
+          user_earning_rate?: number
+        }
+        Update: {
+          api_endpoint?: string | null
+          api_key_required?: boolean | null
+          created_at?: string | null
+          fixed_fee_amount?: number | null
+          has_api?: boolean | null
+          id?: string
+          is_active?: boolean | null
+          payment_model?: string
+          provider_name?: string
+          tiptop_commission_rate?: number
+          updated_at?: string | null
+          user_earning_rate?: number
         }
         Relationships: []
       }
@@ -1488,6 +1551,44 @@ export type Database = {
       }
     }
     Views: {
+      admin_revenue_by_provider: {
+        Row: {
+          active_users: number | null
+          avg_commission_rate: number | null
+          has_api: boolean | null
+          last_transaction: string | null
+          payment_model: string | null
+          provider_name: string | null
+          total_gross_revenue: number | null
+          total_tiptop_revenue: number | null
+          total_transactions: number | null
+          total_user_earnings: number | null
+        }
+        Relationships: []
+      }
+      admin_revenue_timeline: {
+        Row: {
+          active_users: number | null
+          daily_tiptop_revenue: number | null
+          daily_user_earnings: number | null
+          date: string | null
+          provider_name: string | null
+          transactions: number | null
+        }
+        Relationships: []
+      }
+      admin_user_ltv: {
+        Row: {
+          avg_monthly_tiptop_revenue: number | null
+          first_earning_date: string | null
+          last_earning_date: string | null
+          providers_count: number | null
+          total_tiptop_revenue: number | null
+          total_user_earnings: number | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
       user_all_analyses: {
         Row: {
           address_id: string | null
@@ -1567,6 +1668,10 @@ export type Database = {
       link_user_analyses_from_journey: {
         Args: { p_user_id: string }
         Returns: number
+      }
+      refresh_admin_revenue_views: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
       repair_orphaned_user_selections: {
         Args: { p_analysis_id: string; p_user_id: string }
