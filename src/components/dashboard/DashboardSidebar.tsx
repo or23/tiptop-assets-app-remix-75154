@@ -92,13 +92,14 @@ const DashboardSidebar = ({ properties, selectedPropertyId, onPropertySelect }: 
 
   return (
     <div 
-      className={`bg-card border-r border-border min-h-screen flex flex-col fixed left-0 top-0 transition-all duration-300 ease-in-out pb-20 ${
+      className={`bg-card border-r border-border fixed left-0 top-0 bottom-0 flex flex-col transition-all duration-300 ease-in-out ${
         isCollapsed ? 'w-16 z-40' : 'w-64 z-[70]'
       }`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="flex-1 overflow-y-auto">
+      {/* Scrollable content area */}
+      <div className="flex-1 overflow-y-auto min-h-0">
         <DashboardSidebarHeader 
           properties={properties}
           selectedPropertyId={selectedPropertyId}
@@ -107,7 +108,9 @@ const DashboardSidebar = ({ properties, selectedPropertyId, onPropertySelect }: 
         />
         <DashboardSidebarNavigation isCollapsed={isCollapsed} />
       </div>
-      <div className="mt-auto border-t border-border">
+      
+      {/* Fixed bottom navigation */}
+      <div className="flex-shrink-0 border-t border-border bg-card">
         <DashboardSidebarBottomNav isCollapsed={isCollapsed} />
       </div>
     </div>
