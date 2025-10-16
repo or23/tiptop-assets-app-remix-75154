@@ -316,35 +316,6 @@ const EnhancedAdditionalAssetsCarousel = ({
         
         <CollapsibleContent>
       
-      {/* Filter and Sort Controls - Desktop */}
-      <div className="hidden sm:flex flex-row flex-wrap gap-4 mb-6 p-4 rounded-lg bg-white/5 border border-white/10">
-        <div className="flex items-center gap-2">
-          <span className="text-white text-sm font-medium">Sort by:</span>
-          <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger className="w-40 bg-white/10 border-white/20 text-white text-sm">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="name">Name</SelectItem>
-              <SelectItem value="revenue">Revenue</SelectItem>
-              <SelectItem value="roi">ROI</SelectItem>
-              <SelectItem value="setup-cost">Setup Cost</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        
-        <div className="ml-auto text-white text-sm">
-          Showing {filteredOpportunities.length} of {opportunities.length} opportunities
-        </div>
-      </div>
-
-      {/* Mobile Stats Only */}
-      <div className="sm:hidden mb-4 text-center">
-        <div className="text-white text-sm">
-          Showing {filteredOpportunities.length} of {opportunities.length} opportunities
-        </div>
-      </div>
-
       {/* Category Carousel */}
       <div className="mb-4 sm:mb-6">
         <Carousel 
@@ -384,6 +355,28 @@ const EnhancedAdditionalAssetsCarousel = ({
             ))}
           </CarouselContent>
         </Carousel>
+      </div>
+
+      {/* Filter and Sort Controls - Desktop */}
+      <div className="hidden sm:flex flex-row flex-wrap gap-4 mb-6 p-4 rounded-lg bg-white/5 border border-white/10">
+        <div className="flex items-center gap-2">
+          <span className="text-white text-sm font-medium">Sort by:</span>
+          <Select value={sortBy} onValueChange={setSortBy}>
+            <SelectTrigger className="w-40 bg-white/10 border-white/20 text-white text-sm">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="name">Name</SelectItem>
+              <SelectItem value="revenue">Revenue</SelectItem>
+              <SelectItem value="roi">ROI</SelectItem>
+              <SelectItem value="setup-cost">Setup Cost</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        
+        <div className="ml-auto text-white text-sm">
+          Showing {filteredOpportunities.length} of {opportunities.length} opportunities
+        </div>
       </div>
       
       <Carousel 
