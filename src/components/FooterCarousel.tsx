@@ -124,7 +124,7 @@ const AssetCard = ({
         y: -5
       }} 
       className={`p-4 rounded-xl cursor-pointer transition-all duration-300 ${hoverColor}
-                backdrop-blur-xl bg-white/5 border border-white/20 h-full
+                backdrop-blur-md bg-black/20 border border-white/20 h-full
                 bg-gradient-to-br ${gradientFrom} ${gradientTo} overflow-hidden relative`} 
       style={{
         boxShadow: `0 5px 20px ${glowColor}, 0 0 8px ${glowColor}`
@@ -132,9 +132,6 @@ const AssetCard = ({
     >
       {/* Colored overlay gradient */}
       <div className={`absolute inset-0 bg-gradient-to-tr ${color} to-transparent opacity-10 z-0`}></div>
-      
-      {/* Glass reflection effect */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/30 to-transparent z-0"></div>
       
       <div className="relative z-10 flex flex-col items-center text-center">
         {/* Icon container with glow */}
@@ -146,12 +143,6 @@ const AssetCard = ({
         <h3 className="font-medium text-lg mb-1 text-white drop-shadow-md">{title}</h3>
         <p className="text-sm text-white/90">{description}</p>
       </div>
-      
-      {/* Glossy reflection */}
-      <div className="absolute top-0 left-0 right-0 h-1/3 bg-gradient-to-b from-white/30 to-transparent rounded-t-xl pointer-events-none"></div>
-      
-      {/* Bottom light effect */}
-      <div className="absolute bottom-0 left-0 right-0 h-1/4 bg-gradient-to-t from-white/10 to-transparent rounded-b-xl pointer-events-none"></div>
     </motion.div>
   );
 };
