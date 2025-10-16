@@ -162,14 +162,14 @@ export const LoginStatsTable = () => {
           }
 
           // Create display name prioritizing user info over property
-          let displayName = '';
-          if (userName) {
-            displayName = userName;
-          } else if (userEmail && userEmail !== 'Unknown Email') {
-            displayName = userEmail; // Show full email instead of property
-          } else {
-            displayName = `User (ID: ${stat.user_id.substring(0, 8)}...)`;
+          let displayName = userName || userEmail;
+          
+          // If still no display name, try to extract from email part before @
+          if (!displayName || displayName === 'Unknown Email') {
+            displayName = `User ${stat.user_id.substring(0, 8)}`;
           }
+          
+          console.log(`📊 User ${stat.user_id.substring(0, 8)}: name="${userName}", email="${userEmail}", display="${displayName}"`);
 
           console.log(`📊 [LOGIN-STATS] User ${index + 1}: ${displayName} (${stat.login_count} logins)`);
 
