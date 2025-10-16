@@ -314,10 +314,8 @@ const EnhancedAdditionalAssetsCarousel = ({
           </div>
         </CollapsibleTrigger>
         
-        <CollapsibleContent>
-      
-      {/* Category Carousel */}
-      <div className="mb-4 sm:mb-6">
+        {/* Category Carousel - Always Visible */}
+        <div className="mb-4 sm:mb-6">
         <Carousel 
           className="w-full"
           opts={{
@@ -356,8 +354,8 @@ const EnhancedAdditionalAssetsCarousel = ({
           </CarouselContent>
         </Carousel>
       </div>
-
-      {/* Filter and Sort Controls - Desktop */}
+        
+        <CollapsibleContent>
       <div className="hidden sm:flex flex-row flex-wrap gap-4 mb-6 p-4 rounded-lg bg-white/5 border border-white/10">
         <div className="flex items-center gap-2">
           <span className="text-white text-sm font-medium">Sort by:</span>
