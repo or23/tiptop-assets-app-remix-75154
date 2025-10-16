@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Check, Plus, Filter, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { Check, Plus, Filter, TrendingUp, TrendingDown, Minus, ChevronDown } from 'lucide-react';
 import {
   Carousel,
   CarouselContent,
@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { AdditionalOpportunity } from "@/types/analysis";
 import { glowColorMap } from "./AssetCard";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -44,6 +45,7 @@ const EnhancedAdditionalAssetsCarousel = ({
 }: EnhancedAdditionalAssetsCarouselProps) => {
   const [filterType, setFilterType] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("name");
+  const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile();
 
   // Get filtered opportunities based on current filter
@@ -292,9 +294,19 @@ const EnhancedAdditionalAssetsCarousel = ({
       transition={{ duration: 0.5, delay: 0.6 }}
       className="mt-8 sm:mt-10 md:mt-12 px-3 sm:px-4 md:px-6"
     >
-      <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-4 sm:mb-6 drop-shadow-lg text-center md:text-left">
-        Additional Asset Opportunities
-      </h2>
+      <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+        <CollapsibleTrigger className="w-full group">
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white drop-shadow-lg text-center md:text-left">
+              Additional Asset Opportunities
+            </h2>
+            <ChevronDown 
+              className={`h-6 w-6 text-white transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+            />
+          </div>
+        </CollapsibleTrigger>
+        
+        <CollapsibleContent>
       
       {/* Filter and Sort Controls - Desktop */}
       <div className="hidden sm:flex flex-row flex-wrap gap-4 mb-6 p-4 rounded-lg bg-white/5 border border-white/10">
@@ -463,6 +475,8 @@ const EnhancedAdditionalAssetsCarousel = ({
           />
         </div>
       </div>
+        </CollapsibleContent>
+      </Collapsible>
     </motion.div>
   );
 };
