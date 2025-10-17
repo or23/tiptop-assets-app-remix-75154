@@ -219,7 +219,7 @@ const EnhancedAdditionalAssetsCarousel = ({
     // Desktop layout - smaller square cards
     return (
       <div 
-        className="aspect-square rounded-xl relative cursor-pointer transition-all duration-300 overflow-hidden group max-w-[140px]"
+        className="aspect-square rounded-xl relative cursor-pointer transition-all duration-300 overflow-hidden group max-w-[170px]"
         onClick={() => onAssetToggle(opportunity.title)}
         style={{
           boxShadow: isSelected ? `0 4px 20px ${glowColor.replace('0.5', '0.3')}` : `0 2px 10px rgba(0,0,0,0.3)`
@@ -228,7 +228,7 @@ const EnhancedAdditionalAssetsCarousel = ({
         {/* Background Image with Icon */}
         <div className="absolute inset-0 bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900">
           <div className="absolute inset-0 flex items-center justify-center opacity-20">
-            {getAssetIcon(opportunity.icon, { className: 'w-16 h-16 sm:w-20 sm:h-20 object-contain' })}
+            {getAssetIcon(opportunity.icon, { className: 'w-20 h-20 sm:w-24 sm:h-24 object-contain' })}
           </div>
         </div>
 
@@ -237,7 +237,7 @@ const EnhancedAdditionalAssetsCarousel = ({
         
         {/* Selection indicator at bottom right */}
         <div className="absolute bottom-3 right-3 z-10">
-          <div className={`flex items-center gap-1 px-3 py-2 rounded-full text-sm font-medium transition-all ${
+          <div className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium transition-all ${
             isSelected 
               ? 'bg-white text-black shadow-lg' 
               : 'bg-white text-black hover:shadow-xl'
@@ -257,31 +257,31 @@ const EnhancedAdditionalAssetsCarousel = ({
         </div>
         
         {/* Content Overlay */}
-        <div className="absolute inset-0 p-3 flex flex-col z-10">
+        <div className="absolute inset-0 p-4 flex flex-col z-10">
           {/* Top: Small icon and revenue tier */}
           <div className="flex items-center justify-between mb-2">
-            {getAssetIcon(opportunity.icon, { className: 'w-8 h-8 object-contain' })}
+            {getAssetIcon(opportunity.icon, { className: 'w-9 h-9 object-contain' })}
             {getRevenueTierIcon(opportunity.monthlyRevenue)}
           </div>
           
           {/* Title - moved higher and allows multiple lines */}
           <div className="flex-1 flex flex-col justify-start">
-            <h3 className="text-base font-bold text-white drop-shadow-lg mb-auto max-w-full">
+            <h3 className="text-base font-bold text-white drop-shadow-lg mb-auto max-w-full leading-tight">
               {opportunity.title}
             </h3>
           </div>
           
           {/* Bottom: Revenue and Provider Badge */}
-          <div className="mt-auto space-y-1">
+          <div className="mt-auto space-y-1.5">
             <div className="flex items-end justify-between">
-              <p className={`text-lg font-bold ${getRevenueTierColor(opportunity.monthlyRevenue)} drop-shadow-lg`}>
+              <p className={`text-xl font-bold ${getRevenueTierColor(opportunity.monthlyRevenue)} drop-shadow-lg`}>
                 ${opportunity.monthlyRevenue}/mo
               </p>
             </div>
             {/* Provider Badge - single line, consistent spacing */}
             <div className={`flex justify-end ${opportunity.provider ? 'h-6' : 'h-6'}`}>
               {opportunity.provider && (
-                <div className="bg-white/20 backdrop-blur text-white text-xs rounded-full px-2 py-1 font-medium whitespace-nowrap overflow-hidden text-ellipsis max-w-20">
+                <div className="bg-white/20 backdrop-blur text-white text-xs rounded-full px-2.5 py-1 font-medium whitespace-nowrap overflow-hidden text-ellipsis max-w-24">
                   {opportunity.provider}
                 </div>
               )}
