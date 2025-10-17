@@ -58,13 +58,12 @@ export const useAddressSearch = () => {
 
   // Apply selected address from Places Element
   const applySelectedAddress = useCallback((formattedAddress: string, coordinates: google.maps.LatLngLiteral) => {
-    if (!mapInstance) return;
-
     console.log('applySelectedAddress: Processing address selection');
     console.log('- Address:', formattedAddress);
     console.log('- Coordinates:', coordinates);
+    console.log('- Map instance available:', !!mapInstance);
 
-    // Update state
+    // Update state (always execute, even if map isn't ready yet)
     setAddress(formattedAddress);
     setHasSelectedAddress(true);
     setAddressCoordinates(coordinates);
@@ -75,9 +74,13 @@ export const useAddressSearch = () => {
       setAnalysisError(null);
     }
 
-    // Center map and set zoom
-    mapInstance.setCenter(coordinates);
-    mapInstance.setZoom(12);
+    // Center map and set zoom (only if map is initialized)
+    if (mapInstance) {
+      mapInstance.setCenter(coordinates);
+      mapInstance.setZoom(12);
+    } else {
+      console.log('Map not ready yet, deferring map operations');
+    }
 
     // Show success toast
     toast({
