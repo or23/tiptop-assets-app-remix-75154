@@ -115,182 +115,90 @@ const EnhancedAdditionalAssetsCarousel = ({
     return "text-blue-400";
   };
 
-  // Create groups for both mobile and desktop (mobile: 2 per group, desktop: 10 per group = 5 cols × 2 rows)
-  const createCardGroups = (opportunities: AdditionalOpportunity[]) => {
-    const groupSize = isMobile ? 2 : 10;
-    const groups = [];
-    for (let i = 0; i < opportunities.length; i += groupSize) {
-      groups.push(opportunities.slice(i, i + groupSize));
-    }
-    return groups;
-  };
-
-  const cardGroups = createCardGroups(filteredOpportunities);
-
   const CompactCard = ({ opportunity, index }: { opportunity: AdditionalOpportunity; index: number }) => {
     const iconType = opportunity.icon as keyof typeof glowColorMap;
     const glowColor = glowColorMap[iconType] || "rgba(155, 135, 245, 0.5)";
     const isSelected = selectedAssets.includes(opportunity.title);
     
-    if (isMobile) {
-      // Mobile layout matching AssetCard
-      return (
-        <div 
-          className="w-[280px] h-[460px] rounded-xl relative cursor-pointer transition-all duration-300 overflow-hidden group bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900"
-          onClick={() => onAssetToggle(opportunity.title)}
-          style={{
-            boxShadow: isSelected ? `0 4px 20px ${glowColor.replace('0.5', '0.3')}` : `0 2px 10px rgba(0,0,0,0.3)`
-          }}
-        >
-          {/* Glow effect when selected */}
-          {isSelected && (
-            <div
-              className="absolute inset-0 blur-xl opacity-30 z-0"
-              style={{ background: glowColor }}
-            />
-          )}
-          
-          <div className="relative z-10 h-full p-4 flex flex-col">
-            {/* Title */}
-            <div className="mb-2">
-              <h3 className="text-lg font-bold text-white line-clamp-2">{opportunity.title}</h3>
-            </div>
-
-            {/* Description */}
-            <div className="mb-4">
-              <p className="text-white/90 text-sm leading-relaxed line-clamp-2">{opportunity.description || "Monetize your property with this opportunity"}</p>
-            </div>
-
-            {/* Big centered icon */}
-            <div className="flex justify-center items-center flex-grow mb-4">
-              {getAssetIcon(opportunity.icon, { className: 'w-32 h-32 object-contain' })}
-            </div>
-
-            {/* Revenue */}
-            <div className="text-center mb-3">
-              <p className="text-2xl font-bold text-white">${opportunity.monthlyRevenue}/month</p>
-            </div>
-
-            {/* Provider info if available */}
-            {opportunity.provider && (
-              <div className="flex justify-center mb-2">
-                <div className="inline-block bg-white/20 text-white text-xs rounded-full px-3 py-1 font-medium">
-                  {opportunity.provider}
-                </div>
-              </div>
-            )}
-
-            {/* Setup cost and ROI info if available */}
-            {opportunity.setupCost && opportunity.setupCost > 0 && (
-              <div className="flex flex-col gap-1 text-xs text-white/80 text-center mb-3">
-                <span>Setup: <span className="text-white font-medium">${opportunity.setupCost}</span></span>
-                {opportunity.roi && <span>ROI: <span className="text-white font-medium">{opportunity.roi} mo</span></span>}
-              </div>
-            )}
-
-            {/* Select button at bottom right */}
-            <div className="flex justify-end mt-auto">
-              <div className={`flex items-center gap-1 px-3 py-2 rounded-full text-sm font-medium transition-all ${
-                isSelected 
-                  ? 'bg-white text-black shadow-lg' 
-                  : 'bg-white text-black hover:shadow-xl'
-              }`}>
-                {isSelected ? (
-                  <>
-                    <Check className="h-4 w-4" />
-                    <span>Selected</span>
-                  </>
-                ) : (
-                  <>
-                    <Plus className="h-4 w-4" />
-                    <span>Select</span>
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
-          
-          {/* Gradient overlay for depth */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
-        </div>
-      );
-    }
-    
-    // Desktop layout - smaller square cards
+    // Unified large card layout for both mobile and desktop
     return (
       <div 
-        className="aspect-square rounded-xl relative cursor-pointer transition-all duration-300 overflow-hidden group max-w-[170px]"
+        className="w-[280px] h-[460px] rounded-xl relative cursor-pointer transition-all duration-300 overflow-hidden group bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900"
         onClick={() => onAssetToggle(opportunity.title)}
         style={{
           boxShadow: isSelected ? `0 4px 20px ${glowColor.replace('0.5', '0.3')}` : `0 2px 10px rgba(0,0,0,0.3)`
         }}
       >
-        {/* Background Image with Icon */}
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900">
-          <div className="absolute inset-0 flex items-center justify-center opacity-20">
-            {getAssetIcon(opportunity.icon, { className: 'w-20 h-20 sm:w-24 sm:h-24 object-contain' })}
+        {/* Glow effect when selected */}
+        {isSelected && (
+          <div
+            className="absolute inset-0 blur-xl opacity-30 z-0"
+            style={{ background: glowColor }}
+          />
+        )}
+        
+        <div className="relative z-10 h-full p-4 flex flex-col">
+          {/* Title */}
+          <div className="mb-2">
+            <h3 className="text-lg font-bold text-white line-clamp-2">{opportunity.title}</h3>
           </div>
-        </div>
 
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20"></div>
-        
-        {/* Selection indicator at bottom right */}
-        <div className="absolute bottom-3 right-3 z-10">
-          <div className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium transition-all ${
-            isSelected 
-              ? 'bg-white text-black shadow-lg' 
-              : 'bg-white text-black hover:shadow-xl'
-          }`}>
-            {isSelected ? (
-              <>
-                <Check className="h-4 w-4" />
-                <span>Selected</span>
-              </>
-            ) : (
-              <>
-                <Plus className="h-4 w-4" />
-                <span>Select</span>
-              </>
-            )}
+          {/* Description */}
+          <div className="mb-4">
+            <p className="text-white/90 text-sm leading-relaxed line-clamp-2">{opportunity.description || "Monetize your property with this opportunity"}</p>
           </div>
-        </div>
-        
-        {/* Content Overlay */}
-        <div className="absolute inset-0 p-4 flex flex-col z-10">
-          {/* Top: Small icon and revenue tier */}
-          <div className="flex items-center justify-between mb-2">
-            {getAssetIcon(opportunity.icon, { className: 'w-9 h-9 object-contain' })}
-            {getRevenueTierIcon(opportunity.monthlyRevenue)}
+
+          {/* Big centered icon */}
+          <div className="flex justify-center items-center flex-grow mb-4">
+            {getAssetIcon(opportunity.icon, { className: 'w-32 h-32 object-contain' })}
           </div>
-          
-          {/* Title - moved higher and allows multiple lines */}
-          <div className="flex-1 flex flex-col justify-start">
-            <h3 className="text-base font-bold text-white drop-shadow-lg mb-auto max-w-full leading-tight">
-              {opportunity.title}
-            </h3>
+
+          {/* Revenue */}
+          <div className="text-center mb-3">
+            <p className="text-2xl font-bold text-white">${opportunity.monthlyRevenue}/month</p>
           </div>
-          
-          {/* Bottom: Revenue and Provider Badge */}
-          <div className="mt-auto space-y-1.5">
-            <div className="flex items-end justify-between">
-              <p className={`text-xl font-bold ${getRevenueTierColor(opportunity.monthlyRevenue)} drop-shadow-lg`}>
-                ${opportunity.monthlyRevenue}/mo
-              </p>
+
+          {/* Provider info if available */}
+          {opportunity.provider && (
+            <div className="flex justify-center mb-2">
+              <div className="inline-block bg-white/20 text-white text-xs rounded-full px-3 py-1 font-medium">
+                {opportunity.provider}
+              </div>
             </div>
-            {/* Provider Badge - single line, consistent spacing */}
-            <div className={`flex justify-end ${opportunity.provider ? 'h-6' : 'h-6'}`}>
-              {opportunity.provider && (
-                <div className="bg-white/20 backdrop-blur text-white text-xs rounded-full px-2.5 py-1 font-medium whitespace-nowrap overflow-hidden text-ellipsis max-w-24">
-                  {opportunity.provider}
-                </div>
+          )}
+
+          {/* Setup cost and ROI info if available */}
+          {opportunity.setupCost && opportunity.setupCost > 0 && (
+            <div className="flex flex-col gap-1 text-xs text-white/80 text-center mb-3">
+              <span>Setup: <span className="text-white font-medium">${opportunity.setupCost}</span></span>
+              {opportunity.roi && <span>ROI: <span className="text-white font-medium">{opportunity.roi} mo</span></span>}
+            </div>
+          )}
+
+          {/* Select button at bottom right */}
+          <div className="flex justify-end mt-auto">
+            <div className={`flex items-center gap-1 px-3 py-2 rounded-full text-sm font-medium transition-all ${
+              isSelected 
+                ? 'bg-white text-black shadow-lg' 
+                : 'bg-white text-black hover:shadow-xl'
+            }`}>
+              {isSelected ? (
+                <>
+                  <Check className="h-4 w-4" />
+                  <span>Selected</span>
+                </>
+              ) : (
+                <>
+                  <Plus className="h-4 w-4" />
+                  <span>Select</span>
+                </>
               )}
             </div>
           </div>
         </div>
         
-        {/* Hover Effect */}
-        <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        {/* Gradient overlay for depth */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
       </div>
     );
   };
@@ -384,27 +292,13 @@ const EnhancedAdditionalAssetsCarousel = ({
           loop: true
         }}
       >
-        {isMobile ? (
-          <CarouselContent className="py-2 -ml-2">
-            {filteredOpportunities.map((opportunity, index) => (
-              <CarouselItem key={opportunity.title} className="pl-2 basis-auto">
-                <CompactCard opportunity={opportunity} index={index} />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        ) : (
-          <CarouselContent className="py-2">
-            {cardGroups.map((group, groupIndex) => (
-              <CarouselItem key={groupIndex} className="basis-full">
-                <div className="grid grid-cols-5 grid-rows-2 gap-3">
-                  {group.map((opportunity, index) => (
-                    <CompactCard key={opportunity.title} opportunity={opportunity} index={index} />
-                  ))}
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        )}
+        <CarouselContent className="py-2 -ml-2">
+          {filteredOpportunities.map((opportunity, index) => (
+            <CarouselItem key={opportunity.title} className="pl-2 basis-auto">
+              <CompactCard opportunity={opportunity} index={index} />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
         <CarouselPrevious className="left-1 bg-white/20 hover:bg-white/30 text-white" />
         <CarouselNext className="right-1 bg-white/20 hover:bg-white/30 text-white" />
       </Carousel>
