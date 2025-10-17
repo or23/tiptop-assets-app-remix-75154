@@ -30,8 +30,15 @@ const PlaceAutocompleteElement: React.FC<Props> = ({ onSelect, placeholder = 'Se
       try {
         await loadGoogleMaps();
         
-        if (!inputRef.current || !google.maps.places.Autocomplete) {
-          console.error('Required elements not available');
+        // Wait for input element to be ready (especially important on mobile)
+        if (!inputRef.current) {
+          console.log('Input not ready, waiting...');
+          setTimeout(init, 100);
+          return;
+        }
+
+        if (!google.maps.places.Autocomplete) {
+          console.error('Google Maps Autocomplete not available');
           return;
         }
 
@@ -42,6 +49,7 @@ const PlaceAutocompleteElement: React.FC<Props> = ({ onSelect, placeholder = 'Se
         });
 
         autocompleteRef.current = autocomplete;
+        console.log('Autocomplete initialized successfully');
 
         // Handle place selection
         const handlePlaceChanged = () => {
