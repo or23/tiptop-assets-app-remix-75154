@@ -115,9 +115,9 @@ const EnhancedAdditionalAssetsCarousel = ({
     return "text-blue-400";
   };
 
-  // Create groups for both mobile and desktop (mobile: 2 per group, desktop: 4 per group)
+  // Create groups for both mobile and desktop (mobile: 2 per group, desktop: 10 per group = 5 cols × 2 rows)
   const createCardGroups = (opportunities: AdditionalOpportunity[]) => {
-    const groupSize = isMobile ? 2 : 4;
+    const groupSize = isMobile ? 2 : 10;
     const groups = [];
     for (let i = 0; i < opportunities.length; i += groupSize) {
       groups.push(opportunities.slice(i, i + groupSize));
@@ -219,7 +219,7 @@ const EnhancedAdditionalAssetsCarousel = ({
     // Desktop layout - smaller square cards
     return (
       <div 
-        className="aspect-square rounded-xl relative cursor-pointer transition-all duration-300 overflow-hidden group"
+        className="aspect-square rounded-xl relative cursor-pointer transition-all duration-300 overflow-hidden group max-w-[140px]"
         onClick={() => onAssetToggle(opportunity.title)}
         style={{
           boxShadow: isSelected ? `0 4px 20px ${glowColor.replace('0.5', '0.3')}` : `0 2px 10px rgba(0,0,0,0.3)`
@@ -395,8 +395,8 @@ const EnhancedAdditionalAssetsCarousel = ({
         ) : (
           <CarouselContent className="py-2">
             {cardGroups.map((group, groupIndex) => (
-              <CarouselItem key={groupIndex} className={`basis-1/2 md:basis-1/3 lg:basis-1/2`}>
-                <div className={`grid grid-rows-2 gap-2`}>
+              <CarouselItem key={groupIndex} className="basis-full">
+                <div className="grid grid-cols-5 grid-rows-2 gap-3">
                   {group.map((opportunity, index) => (
                     <CompactCard key={opportunity.title} opportunity={opportunity} index={index} />
                   ))}
