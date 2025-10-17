@@ -38,7 +38,7 @@ const DashboardLayout = ({ children, properties, selectedPropertyId, onPropertyS
           onPropertySelect={onPropertySelect}
         />
         <main className="w-full overflow-auto">
-          <div className="pt-16 px-4 pb-4">
+          <div className="pt-16 px-4 pb-24">
             {children}
           </div>
         </main>
