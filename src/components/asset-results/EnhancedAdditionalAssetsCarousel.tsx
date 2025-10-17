@@ -45,7 +45,7 @@ const EnhancedAdditionalAssetsCarousel = ({
 }: EnhancedAdditionalAssetsCarouselProps) => {
   const [filterType, setFilterType] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("name");
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const isMobile = useIsMobile();
 
   // Get filtered opportunities based on current filter
@@ -216,10 +216,10 @@ const EnhancedAdditionalAssetsCarousel = ({
       );
     }
     
-    // Desktop layout (unchanged)
+    // Desktop layout - smaller square cards
     return (
       <div 
-        className="h-[140px] rounded-xl relative cursor-pointer transition-all duration-300 overflow-hidden group"
+        className="aspect-square rounded-xl relative cursor-pointer transition-all duration-300 overflow-hidden group"
         onClick={() => onAssetToggle(opportunity.title)}
         style={{
           boxShadow: isSelected ? `0 4px 20px ${glowColor.replace('0.5', '0.3')}` : `0 2px 10px rgba(0,0,0,0.3)`
