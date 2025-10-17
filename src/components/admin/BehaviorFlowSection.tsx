@@ -14,7 +14,7 @@ export const BehaviorFlowSection = () => {
   const topAction = topActions[0];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-20">
       {/* KPI Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <ActiveUsersWidget />
