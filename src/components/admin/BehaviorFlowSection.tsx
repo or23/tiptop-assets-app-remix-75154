@@ -5,6 +5,7 @@ import { LiveEventStream } from './behavior-flow/LiveEventStream';
 import { TopActionsChart } from './behavior-flow/TopActionsChart';
 import { PageFunnel } from './behavior-flow/PageFunnel';
 import { ActivityTimeline } from './behavior-flow/ActivityTimeline';
+import { UserJourneyFunnel } from './behavior-flow/UserJourneyFunnel';
 import { Activity, MousePointerClick, TrendingUp } from 'lucide-react';
 
 export const BehaviorFlowSection = () => {
@@ -71,6 +72,9 @@ export const BehaviorFlowSection = () => {
 
       {/* Activity Timeline */}
       <ActivityTimeline />
+
+      {/* User Journey Funnel */}
+      <UserJourneyFunnel />
     </div>
   );
 };
