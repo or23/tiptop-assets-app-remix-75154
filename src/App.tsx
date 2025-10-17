@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './contexts/AuthContext';
 import { GoogleMapProvider } from './contexts/GoogleMapContext';
 import JourneyTracker from './components/JourneyTracker';
+import BehaviorTracker from './components/BehaviorTracker';
 
 import { ModelGenerationProvider } from './contexts/ModelGeneration';
 import { Toaster } from './components/ui/toaster';
@@ -52,6 +53,7 @@ function App() {
           <GoogleMapProvider>
             <ModelGenerationProvider>
               <JourneyTracker />
+              <BehaviorTracker />
               <Suspense fallback={<div className="p-8 text-center">Loading...</div>}>
                 <Routes>
                   <Route path="/" element={<Index />} />
