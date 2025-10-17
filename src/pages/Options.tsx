@@ -48,7 +48,7 @@ const Options = () => {
       // If we have a selected option, redirect to onboarding
       if (selectedOption) {
         console.log('🎯 Redirecting to onboarding with option:', selectedOption);
-        window.location.href = `/onboarding?option=${selectedOption}`;
+        window.location.href = `/dashboard/onboarding?option=${selectedOption}`;
       } else {
         console.log('🔄 No selected option, staying on options page');
       }
@@ -83,7 +83,7 @@ const Options = () => {
     });
     
     console.log('🎯 Redirecting to onboarding with option:', selectedOption);
-    window.location.href = `/onboarding?option=${selectedOption}`;
+    window.location.href = `/dashboard/onboarding?option=${selectedOption}`;
   };
 
   // Show loading state while initializing or processing auth
