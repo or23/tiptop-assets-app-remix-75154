@@ -490,30 +490,57 @@ export type Database = {
       }
       leads: {
         Row: {
+          assigned_to: string | null
+          communication_history: Json | null
+          contact_method: string | null
+          contacted_at: string | null
           created_at: string | null
           email: string | null
           id: string
+          last_contact_at: string | null
           metadata: Json | null
+          notes: string | null
           phone: string | null
+          property_analysis_id: string | null
+          report_sent_at: string | null
           source: string
+          status: string | null
           updated_at: string | null
         }
         Insert: {
+          assigned_to?: string | null
+          communication_history?: Json | null
+          contact_method?: string | null
+          contacted_at?: string | null
           created_at?: string | null
           email?: string | null
           id?: string
+          last_contact_at?: string | null
           metadata?: Json | null
+          notes?: string | null
           phone?: string | null
+          property_analysis_id?: string | null
+          report_sent_at?: string | null
           source?: string
+          status?: string | null
           updated_at?: string | null
         }
         Update: {
+          assigned_to?: string | null
+          communication_history?: Json | null
+          contact_method?: string | null
+          contacted_at?: string | null
           created_at?: string | null
           email?: string | null
           id?: string
+          last_contact_at?: string | null
           metadata?: Json | null
+          notes?: string | null
           phone?: string | null
+          property_analysis_id?: string | null
+          report_sent_at?: string | null
           source?: string
+          status?: string | null
           updated_at?: string | null
         }
         Relationships: []
@@ -1675,6 +1702,15 @@ export type Database = {
       }
     }
     Functions: {
+      add_lead_communication: {
+        Args: {
+          p_lead_id: string
+          p_message: string
+          p_method: string
+          p_sent_by?: string
+        }
+        Returns: undefined
+      }
       delete_user_account: {
         Args: Record<PropertyKey, never>
         Returns: undefined
