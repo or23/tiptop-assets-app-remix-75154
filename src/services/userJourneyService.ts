@@ -202,12 +202,11 @@ export const trackAnalysisCompleted = async (
   }
 };
 
-// Track lead capture and save to leads table
-export const trackLeadCaptured = async (contact: string, contactType: 'email' | 'phone', propertyAddress?: string) => {
+// Track lead capture
+export const trackLeadCaptured = async (contact: string, contactType: 'email' | 'phone') => {
   const sessionId = getSessionId();
   
   try {
-    // First, update the journey tracking
     const { data, error } = await supabase.rpc('update_journey_step', {
       p_session_id: sessionId,
       p_step: 'analysis_completed',
@@ -221,38 +220,11 @@ export const trackLeadCaptured = async (contact: string, contactType: 'email' | 
     });
 
     if (error) {
-      console.error('❌ Error tracking lead capture in journey:', error);
-    }
-
-    // Second, save to the leads table with proper source tag
-    const leadData: any = {
-      source: 'homeowner_b',
-      metadata: {
-        session_id: sessionId,
-        captured_at: new Date().toISOString(),
-        property_address: propertyAddress,
-        user_agent: navigator.userAgent,
-        referrer: document.referrer || 'direct'
-      }
-    };
-
-    // Add email or phone based on type
-    if (contactType === 'email') {
-      leadData.email = contact;
-    } else {
-      leadData.phone = contact;
-    }
-
-    const { error: leadsError } = await (supabase as any)
-      .from('leads')
-      .insert(leadData);
-
-    if (leadsError) {
-      console.error('❌ Error saving lead to leads table:', leadsError);
+      console.error('❌ Error tracking lead capture:', error);
       return null;
     }
 
-    console.log('✅ Lead saved to leads table:', { contactType, source: 'homeowner_b' });
+    console.log('✅ Lead capture tracked:', { contactType });
     return data;
   } catch (error) {
     console.error('❌ Error in trackLeadCaptured:', error);

@@ -108,7 +108,7 @@ const Index = () => {
   const handleLeadSubmit = async (contact: string, contactType: 'email' | 'phone') => {
     try {
       await saveLeadContact(contact, contactType);
-      await trackLeadCaptured(contact, contactType, address);
+      await trackLeadCaptured(contact, contactType);
       
       // Track Facebook Pixel lead event
       trackLead(contactType);
