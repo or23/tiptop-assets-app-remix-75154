@@ -35,7 +35,7 @@ export const LeadsSection = () => {
     const fetchLeads = async () => {
       setLoading(true);
       try {
-        // Fetch all leads from the leads table
+        // Fetch all leads from the leads table (includes both landing page and post-analysis)
         const { data, error } = await (supabase as any)
           .from('leads')
           .select('*')
@@ -43,18 +43,28 @@ export const LeadsSection = () => {
 
         if (error) throw error;
 
-        setLeads(data || []);
+        const allLeads = data || [];
+        setLeads(allLeads);
 
-        // Calculate stats
-        const emailCount = (data || []).filter((l: Lead) => l.email).length;
-        const phoneCount = (data || []).filter((l: Lead) => l.phone).length;
-        const landingPageCount = (data || []).filter((l: Lead) => l.source === 'landing_page').length;
+        // Calculate stats from combined sources
+        const emailCount = allLeads.filter((l: Lead) => l.email).length;
+        const phoneCount = allLeads.filter((l: Lead) => l.phone).length;
+        const landingPageCount = allLeads.filter((l: Lead) => l.source === 'landing_page').length;
+        const postAnalysisCount = allLeads.filter((l: Lead) => l.source === 'homeowner_b').length;
 
         setStats({
-          totalLeads: (data || []).length,
+          totalLeads: allLeads.length,
           emailLeads: emailCount,
           phoneLeads: phoneCount,
           landingPageLeads: landingPageCount
+        });
+
+        console.log('📊 Leads Stats:', {
+          total: allLeads.length,
+          landingPage: landingPageCount,
+          postAnalysis: postAnalysisCount,
+          email: emailCount,
+          phone: phoneCount
         });
 
       } catch (error) {
@@ -111,7 +121,7 @@ export const LeadsSection = () => {
   const getSourceBadge = (source: string) => {
     const badges: Record<string, { label: string; variant: 'default' | 'secondary' | 'outline' }> = {
       'landing_page': { label: 'Landing Page', variant: 'default' },
-      'homeowner_b': { label: 'Homeowner B', variant: 'secondary' },
+      'homeowner_b': { label: 'Post-Analysis', variant: 'secondary' },
     };
     return badges[source] || { label: source, variant: 'outline' };
   };

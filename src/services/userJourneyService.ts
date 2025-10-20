@@ -226,7 +226,7 @@ export const trackLeadCaptured = async (contact: string, contactType: 'email' | 
 
     // Second, save to the leads table with proper source tag
     const leadData: any = {
-      source: 'landing_page',
+      source: 'homeowner_b',
       metadata: {
         session_id: sessionId,
         captured_at: new Date().toISOString(),
@@ -252,7 +252,7 @@ export const trackLeadCaptured = async (contact: string, contactType: 'email' | 
       return null;
     }
 
-    console.log('✅ Lead saved to leads table:', { contactType, source: 'landing_page' });
+    console.log('✅ Lead saved to leads table:', { contactType, source: 'homeowner_b' });
     return data;
   } catch (error) {
     console.error('❌ Error in trackLeadCaptured:', error);
