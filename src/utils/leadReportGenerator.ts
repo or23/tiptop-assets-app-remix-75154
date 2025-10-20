@@ -1,5 +1,5 @@
-import { jsPDF } from 'jspdf';
-import 'jspdf-autotable';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 export interface ReportData {
   propertyAddress: string;
@@ -89,7 +89,7 @@ export const generateLeadPropertyReport = (data: ReportData): Blob => {
     asset.description.length > 50 ? asset.description.substring(0, 47) + '...' : asset.description
   ]);
 
-  doc.autoTable({
+  autoTable(doc, {
     startY: yPos,
     head: [['Asset', 'Monthly Revenue', 'Setup Cost', 'ROI', 'Description']],
     body: assetTableData,

@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
+import { EmailTemplateEditor } from './EmailTemplateEditor';
 import { 
   Dialog, 
   DialogContent, 
@@ -17,10 +18,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Mail, MessageSquare, FileText, Clock, User, CheckCircle2, XCircle } from 'lucide-react';
+import { Mail, MessageSquare, FileText, Clock, User, CheckCircle2, XCircle, Eye, Edit } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { generateLeadPropertyReport, ReportData } from '@/utils/leadReportGenerator';
+import { getDefaultEmailTemplate, renderEmailTemplate, EmailTemplate } from '@/utils/emailTemplates';
 
 interface Lead {
   id: string;
@@ -50,6 +52,9 @@ export const LeadCRM = ({ leads, onLeadUpdate }: LeadCRMProps) => {
   const [newStatus, setNewStatus] = useState('');
   const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false);
+  const [emailTemplate, setEmailTemplate] = useState<EmailTemplate>(getDefaultEmailTemplate());
+  const [showTemplateEditor, setShowTemplateEditor] = useState(false);
+  const [showTemplatePreview, setShowTemplatePreview] = useState(false);
 
   const handleOpenDialog = (lead: Lead, action: 'email' | 'sms' | 'report') => {
     setSelectedLead(lead);
@@ -80,14 +85,21 @@ export const LeadCRM = ({ leads, onLeadUpdate }: LeadCRMProps) => {
       reader.onloadend = async () => {
         const base64data = reader.result as string;
         
+        // Render email template with variables
+        const emailContent = renderEmailTemplate(emailTemplate, {
+          ownerName: reportData.ownerName,
+          propertyAddress: reportData.propertyAddress,
+          email: selectedLead.email!,
+          customMessage: customMessage || ''
+        });
+        
         const { data, error } = await supabase.functions.invoke('send-lead-email', {
           body: {
             leadId: selectedLead.id,
             email: selectedLead.email,
-            ownerName: reportData.ownerName,
-            propertyAddress: reportData.propertyAddress,
-            pdfBlob: base64data.split(',')[1],
-            customMessage
+            subject: emailContent.subject,
+            htmlContent: emailContent.html,
+            pdfBlob: base64data.split(',')[1]
           }
         });
 
@@ -97,7 +109,7 @@ export const LeadCRM = ({ leads, onLeadUpdate }: LeadCRMProps) => {
         await supabase
           .from('leads')
           .update({
-            status: 'report_sent',
+            status: newStatus || 'report_sent',
             report_sent_at: new Date().toISOString(),
             last_contact_at: new Date().toISOString(),
             contact_method: 'email',
@@ -300,9 +312,31 @@ export const LeadCRM = ({ leads, onLeadUpdate }: LeadCRMProps) => {
       <Dialog open={!!selectedLead && !!actionType} onOpenChange={() => { setSelectedLead(null); setActionType(null); }}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>
-              {actionType === 'email' && 'Send Email with Report'}
-              {actionType === 'sms' && 'Send SMS'}
+            <DialogTitle className="flex items-center justify-between">
+              <span>
+                {actionType === 'email' && 'Send Email with Report'}
+                {actionType === 'sms' && 'Send SMS'}
+              </span>
+              {actionType === 'email' && (
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowTemplatePreview(true)}
+                  >
+                    <Eye className="h-4 w-4 mr-1" />
+                    Preview
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowTemplateEditor(true)}
+                  >
+                    <Edit className="h-4 w-4 mr-1" />
+                    Edit Template
+                  </Button>
+                </div>
+              )}
             </DialogTitle>
           </DialogHeader>
           
@@ -356,6 +390,76 @@ export const LeadCRM = ({ leads, onLeadUpdate }: LeadCRMProps) => {
               disabled={loading}
             >
               {loading ? 'Sending...' : actionType === 'email' ? 'Send Email' : 'Send SMS'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Template Editor */}
+      <EmailTemplateEditor
+        template={emailTemplate}
+        open={showTemplateEditor}
+        onOpenChange={setShowTemplateEditor}
+        onSave={(template) => {
+          setEmailTemplate(template);
+          toast({
+            title: "Template saved",
+            description: "Email template has been updated successfully",
+          });
+        }}
+        previewVariables={
+          selectedLead
+            ? {
+                ownerName: selectedLead.email?.split('@')[0] || 'Customer',
+                propertyAddress: selectedLead.propertyAddress || 'Property Address',
+                email: selectedLead.email || 'email@example.com',
+                customMessage: customMessage || 'This is a preview of your custom message.'
+              }
+            : undefined
+        }
+      />
+
+      {/* Template Preview Dialog */}
+      <Dialog open={showTemplatePreview} onOpenChange={setShowTemplatePreview}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-hidden flex flex-col">
+          <DialogHeader>
+            <DialogTitle>Email Preview</DialogTitle>
+          </DialogHeader>
+          <div className="flex-1 overflow-y-auto space-y-4">
+            {selectedLead && (
+              <>
+                <div className="space-y-2">
+                  <Label>Subject:</Label>
+                  <div className="p-3 bg-muted rounded-md">
+                    {renderEmailTemplate(emailTemplate, {
+                      ownerName: selectedLead.email?.split('@')[0] || 'Customer',
+                      propertyAddress: selectedLead.propertyAddress || 'Property Address',
+                      email: selectedLead.email || 'email@example.com',
+                      customMessage: customMessage || ''
+                    }).subject}
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label>Email Body:</Label>
+                  <div className="border rounded-md bg-background">
+                    <iframe
+                      srcDoc={renderEmailTemplate(emailTemplate, {
+                        ownerName: selectedLead.email?.split('@')[0] || 'Customer',
+                        propertyAddress: selectedLead.propertyAddress || 'Property Address',
+                        email: selectedLead.email || 'email@example.com',
+                        customMessage: customMessage || ''
+                      }).html}
+                      className="w-full h-[500px] border-0"
+                      title="Email Preview"
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowTemplatePreview(false)}>
+              Close
             </Button>
           </DialogFooter>
         </DialogContent>
