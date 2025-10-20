@@ -66,9 +66,18 @@ export const LeadCRM = ({ leads, onLeadUpdate }: LeadCRMProps) => {
   };
 
   const handleSendEmail = async () => {
-    if (!selectedLead?.email) return;
+    if (!selectedLead?.email) {
+      toast({
+        title: "Error",
+        description: "Lead email is required",
+        variant: "destructive"
+      });
+      return;
+    }
     
     setLoading(true);
+    console.log('Starting email send process for:', selectedLead.email);
+    
     try {
       // Generate PDF report
       const reportData: ReportData = {
@@ -80,59 +89,85 @@ export const LeadCRM = ({ leads, onLeadUpdate }: LeadCRMProps) => {
         analysisDate: new Date()
       };
 
+      console.log('Generating PDF report...');
       const pdfBlob = generateLeadPropertyReport(reportData);
+      console.log('PDF generated, size:', pdfBlob.size);
+      
       const reader = new FileReader();
       
+      reader.onerror = (error) => {
+        console.error('FileReader error:', error);
+        throw new Error('Failed to read PDF file');
+      };
+      
       reader.onloadend = async () => {
-        const base64data = reader.result as string;
-        
-        // Render email template with variables
-        const emailContent = renderEmailTemplate(emailTemplate, {
-          ownerName: reportData.ownerName,
-          propertyAddress: reportData.propertyAddress,
-          email: selectedLead.email!,
-          customMessage: customMessage || ''
-        });
-        
-        const { data, error } = await supabase.functions.invoke('send-lead-email', {
-          body: {
-            leadId: selectedLead.id,
-            email: selectedLead.email,
-            subject: emailContent.subject,
-            htmlContent: emailContent.html,
-            pdfBlob: base64data.split(',')[1]
+        try {
+          const base64data = reader.result as string;
+          console.log('PDF converted to base64');
+          
+          // Render email template with variables
+          const emailContent = renderEmailTemplate(emailTemplate, {
+            ownerName: reportData.ownerName,
+            propertyAddress: reportData.propertyAddress,
+            email: selectedLead.email!,
+            customMessage: customMessage || ''
+          });
+          
+          console.log('Invoking send-lead-email function...');
+          const { data, error } = await supabase.functions.invoke('send-lead-email', {
+            body: {
+              leadId: selectedLead.id,
+              email: selectedLead.email,
+              subject: emailContent.subject,
+              htmlContent: emailContent.html,
+              pdfBlob: base64data.split(',')[1]
+            }
+          });
+
+          if (error) {
+            console.error('Supabase function error:', error);
+            throw error;
           }
-        });
+          
+          console.log('Email sent successfully:', data);
 
-        if (error) throw error;
+          // Update lead status
+          await supabase
+            .from('leads')
+            .update({
+              status: newStatus || 'report_sent',
+              report_sent_at: new Date().toISOString(),
+              last_contact_at: new Date().toISOString(),
+              contact_method: 'email',
+              notes
+            })
+            .eq('id', selectedLead.id);
 
-        // Update lead status
-        await supabase
-          .from('leads')
-          .update({
-            status: newStatus || 'report_sent',
-            report_sent_at: new Date().toISOString(),
-            last_contact_at: new Date().toISOString(),
-            contact_method: 'email',
-            notes
-          })
-          .eq('id', selectedLead.id);
+          // Add to communication history
+          await supabase.rpc('add_lead_communication', {
+            p_lead_id: selectedLead.id,
+            p_method: 'email',
+            p_message: customMessage || 'Property analysis report sent'
+          });
 
-        // Add to communication history
-        await supabase.rpc('add_lead_communication', {
-          p_lead_id: selectedLead.id,
-          p_method: 'email',
-          p_message: customMessage || 'Property analysis report sent'
-        });
+          toast({
+            title: "Email sent successfully",
+            description: `Report sent to ${selectedLead.email}`,
+          });
 
-        toast({
-          title: "Email sent successfully",
-          description: `Report sent to ${selectedLead.email}`,
-        });
-
-        onLeadUpdate();
-        setSelectedLead(null);
-        setActionType(null);
+          onLeadUpdate();
+          setSelectedLead(null);
+          setActionType(null);
+          setLoading(false);
+        } catch (innerError: any) {
+          console.error('Error in FileReader onloadend:', innerError);
+          toast({
+            title: "Error sending email",
+            description: innerError.message || 'Failed to process email',
+            variant: "destructive"
+          });
+          setLoading(false);
+        }
       };
 
       reader.readAsDataURL(pdfBlob);
@@ -141,10 +176,9 @@ export const LeadCRM = ({ leads, onLeadUpdate }: LeadCRMProps) => {
       console.error('Error sending email:', error);
       toast({
         title: "Error sending email",
-        description: error.message,
+        description: error.message || 'An unexpected error occurred',
         variant: "destructive"
       });
-    } finally {
       setLoading(false);
     }
   };
