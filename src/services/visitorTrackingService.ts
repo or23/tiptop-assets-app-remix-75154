@@ -95,32 +95,6 @@ export const getVisitorAnalytics = async () => {
     
     if (error) throw error;
     
-    // Get user emails for converted sessions using the get-user-details edge function
-    const convertedSessions = sessions?.filter(s => s.user_id) || [];
-    const userEmailMap: Record<string, string> = {};
-    
-    for (const session of convertedSessions) {
-      if (session.user_id && !userEmailMap[session.user_id]) {
-        try {
-          const { data: userData, error: userError } = await supabase.functions.invoke('get-user-details', {
-            body: { userId: session.user_id }
-          });
-          
-          if (!userError && userData?.email) {
-            userEmailMap[session.user_id] = userData.email;
-          }
-        } catch (err) {
-          console.error('Error fetching user email:', err);
-        }
-      }
-    }
-    
-    // Add user emails to sessions
-    const sessionsWithEmails = sessions?.map(session => ({
-      ...session,
-      userEmail: session.user_id ? userEmailMap[session.user_id] : null
-    }));
-    
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     
@@ -156,7 +130,7 @@ export const getVisitorAnalytics = async () => {
       conversions,
       conversionRate,
       avgTimeOnSite,
-      recentSessions: sessionsWithEmails || []
+      recentSessions: sessions || []
     };
   } catch (error) {
     console.error('Error getting visitor analytics:', error);

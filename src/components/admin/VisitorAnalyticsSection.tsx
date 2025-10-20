@@ -189,12 +189,7 @@ export const VisitorAnalyticsSection = () => {
                     </p>
                     <p className="text-xs text-muted-foreground">
                       {session.user_id ? (
-                        <div className="flex flex-col items-end gap-0.5">
-                          <span className="text-green-600 font-medium">Converted</span>
-                          {session.userEmail && (
-                            <span className="text-[10px] text-muted-foreground">{session.userEmail}</span>
-                          )}
-                        </div>
+                        <span className="text-green-600">Converted</span>
                       ) : (
                         `${formatTime(session.total_time_seconds || 0)}`
                       )}
