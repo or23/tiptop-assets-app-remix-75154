@@ -1,5 +1,12 @@
 import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
+import 'jspdf-autotable';
+
+declare module 'jspdf' {
+  interface jsPDF {
+    autoTable: (options: any) => jsPDF;
+    lastAutoTable: { finalY: number };
+  }
+}
 
 export interface ReportData {
   propertyAddress: string;
@@ -89,7 +96,7 @@ export const generateLeadPropertyReport = (data: ReportData): Blob => {
     asset.description.length > 50 ? asset.description.substring(0, 47) + '...' : asset.description
   ]);
 
-  autoTable(doc, {
+  doc.autoTable({
     startY: yPos,
     head: [['Asset', 'Monthly Revenue', 'Setup Cost', 'ROI', 'Description']],
     body: assetTableData,
@@ -114,7 +121,7 @@ export const generateLeadPropertyReport = (data: ReportData): Blob => {
     }
   });
 
-  yPos = (doc as any).lastAutoTable.finalY + 15;
+  yPos = doc.lastAutoTable.finalY + 15;
 
   // Bundle Recommendations Section (if available)
   if (data.bundles && data.bundles.length > 0) {
