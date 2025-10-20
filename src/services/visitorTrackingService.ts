@@ -89,9 +89,7 @@ export const trackVisitorConversion = async (userId: string, conversionType: str
 export const getVisitorAnalytics = async () => {
   try {
     const { data: sessions, error } = await supabase
-      .from('visitor_sessions')
-      .select('*')
-      .order('started_at', { ascending: false });
+      .rpc('get_visitor_sessions_with_users');
     
     if (error) throw error;
     

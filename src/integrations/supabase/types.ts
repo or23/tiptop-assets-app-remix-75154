@@ -488,6 +488,36 @@ export type Database = {
         }
         Relationships: []
       }
+      leads: {
+        Row: {
+          created_at: string | null
+          email: string | null
+          id: string
+          metadata: Json | null
+          phone: string | null
+          source: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          metadata?: Json | null
+          phone?: string | null
+          source?: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          metadata?: Json | null
+          phone?: string | null
+          source?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       onboarding_messages: {
         Row: {
           content: string
@@ -1687,6 +1717,25 @@ export type Database = {
           selected_services: Json
           total_monthly_revenue: number
           total_opportunities: number
+        }[]
+      }
+      get_visitor_sessions_with_users: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          completed_at: string
+          conversion_type: string
+          current_step: string
+          extra_data: Json
+          id: string
+          landing_page: string
+          referrer: string
+          session_id: string
+          started_at: string
+          total_time_seconds: number
+          updated_at: string
+          user_agent: string
+          user_email: string
+          user_id: string
         }[]
       }
       link_anonymous_analysis_to_user: {
