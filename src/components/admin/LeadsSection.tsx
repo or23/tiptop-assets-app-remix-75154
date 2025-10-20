@@ -1,19 +1,24 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Badge } from '@/components/ui/badge';
 import { Mail, Phone, Clock, MapPin, User } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
 
 interface Lead {
   id: string;
-  session_id: string;
-  extra_data: any;
-  property_address: string | null;
-  landing_page: string | null;
-  referrer: string | null;
-  started_at: string;
-  user_id: string | null;
+  email?: string;
+  phone?: string;
+  source: string;
+  metadata: {
+    session_id?: string;
+    property_address?: string;
+    referrer?: string;
+    user_agent?: string;
+  };
+  created_at: string;
+  updated_at: string;
 }
 
 export const LeadsSection = () => {
@@ -23,48 +28,33 @@ export const LeadsSection = () => {
     totalLeads: 0,
     emailLeads: 0,
     phoneLeads: 0,
-    convertedLeads: 0
+    landingPageLeads: 0
   });
 
   useEffect(() => {
     const fetchLeads = async () => {
       setLoading(true);
       try {
-        // Fetch all visitor sessions that have lead data
-        const { data, error } = await supabase
-          .from('visitor_sessions')
+        // Fetch all leads from the leads table
+        const { data, error } = await (supabase as any)
+          .from('leads')
           .select('*')
-          .not('extra_data', 'is', null)
-          .order('started_at', { ascending: false });
+          .order('created_at', { ascending: false });
 
         if (error) throw error;
 
-        // Filter sessions that actually have lead contact info
-        const leadsWithContact = (data || []).filter(session => {
-          const extraData = session.extra_data as any;
-          return extraData?.lead_email || extraData?.lead_phone;
-        });
-
-        setLeads(leadsWithContact);
+        setLeads(data || []);
 
         // Calculate stats
-        const emailCount = leadsWithContact.filter(l => {
-          const extraData = l.extra_data as any;
-          return extraData?.lead_email;
-        }).length;
-
-        const phoneCount = leadsWithContact.filter(l => {
-          const extraData = l.extra_data as any;
-          return extraData?.lead_phone;
-        }).length;
-
-        const convertedCount = leadsWithContact.filter(l => l.user_id).length;
+        const emailCount = (data || []).filter((l: Lead) => l.email).length;
+        const phoneCount = (data || []).filter((l: Lead) => l.phone).length;
+        const landingPageCount = (data || []).filter((l: Lead) => l.source === 'landing_page').length;
 
         setStats({
-          totalLeads: leadsWithContact.length,
+          totalLeads: (data || []).length,
           emailLeads: emailCount,
           phoneLeads: phoneCount,
-          convertedLeads: convertedCount
+          landingPageLeads: landingPageCount
         });
 
       } catch (error) {
@@ -109,14 +99,21 @@ export const LeadsSection = () => {
   }
 
   const getContactInfo = (lead: Lead) => {
-    const extraData = lead.extra_data as any;
-    if (extraData?.lead_email) {
-      return { type: 'email', value: extraData.lead_email };
+    if (lead.email) {
+      return { type: 'email', value: lead.email };
     }
-    if (extraData?.lead_phone) {
-      return { type: 'phone', value: extraData.lead_phone };
+    if (lead.phone) {
+      return { type: 'phone', value: lead.phone };
     }
     return null;
+  };
+
+  const getSourceBadge = (source: string) => {
+    const badges: Record<string, { label: string; variant: 'default' | 'secondary' | 'outline' }> = {
+      'landing_page': { label: 'Landing Page', variant: 'default' },
+      'homeowner_b': { label: 'Homeowner B', variant: 'secondary' },
+    };
+    return badges[source] || { label: source, variant: 'outline' };
   };
 
   return (
@@ -164,13 +161,13 @@ export const LeadsSection = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Converted</CardTitle>
+            <CardTitle className="text-sm font-medium">Landing Page</CardTitle>
             <User className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.convertedLeads}</div>
+            <div className="text-2xl font-bold">{stats.landingPageLeads}</div>
             <p className="text-xs text-muted-foreground">
-              {stats.totalLeads > 0 ? `${Math.round((stats.convertedLeads / stats.totalLeads) * 100)}% conversion` : 'No conversions yet'}
+              {stats.totalLeads > 0 ? `${Math.round((stats.landingPageLeads / stats.totalLeads) * 100)}% from landing` : 'No landing page leads'}
             </p>
           </CardContent>
         </Card>
@@ -190,7 +187,7 @@ export const LeadsSection = () => {
             <div className="space-y-3">
               {leads.map((lead) => {
                 const contactInfo = getContactInfo(lead);
-                const extraData = lead.extra_data as any;
+                const sourceBadge = getSourceBadge(lead.source);
                 
                 return (
                   <div 
@@ -208,34 +205,32 @@ export const LeadsSection = () => {
                           <p className="font-medium text-sm">
                             {contactInfo?.value}
                           </p>
-                          {lead.property_address && (
+                          {lead.metadata?.property_address && (
                             <div className="flex items-center gap-1 mt-1">
                               <MapPin className="h-3 w-3 text-muted-foreground" />
                               <p className="text-xs text-muted-foreground">
-                                {lead.property_address}
+                                {lead.metadata.property_address}
                               </p>
                             </div>
                           )}
                         </div>
                       </div>
-                      <div className="text-right">
+                      <div className="text-right flex flex-col items-end gap-1">
                         <div className="flex items-center gap-1 text-xs text-muted-foreground">
                           <Clock className="h-3 w-3" />
-                          {format(new Date(extraData.lead_captured_at || lead.started_at), 'MMM d, HH:mm')}
+                          {format(new Date(lead.created_at), 'MMM d, HH:mm')}
                         </div>
-                        {lead.user_id && (
-                          <span className="inline-block mt-1 px-2 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded">
-                            Converted
-                          </span>
-                        )}
+                        <Badge variant={sourceBadge.variant}>
+                          {sourceBadge.label}
+                        </Badge>
                       </div>
                     </div>
                     <div className="flex items-center gap-4 text-xs text-muted-foreground pl-8">
-                      {lead.landing_page && (
-                        <span>Landing: {lead.landing_page}</span>
+                      {lead.metadata?.referrer && lead.metadata.referrer !== 'direct' && (
+                        <span>Referrer: {lead.metadata.referrer}</span>
                       )}
-                      {lead.referrer && lead.referrer !== 'direct' && (
-                        <span>Source: {lead.referrer}</span>
+                      {lead.metadata?.session_id && (
+                        <span>Session: {lead.metadata.session_id.substring(0, 8)}...</span>
                       )}
                     </div>
                   </div>
