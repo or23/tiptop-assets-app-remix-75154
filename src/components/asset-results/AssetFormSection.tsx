@@ -1,5 +1,5 @@
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,13 +14,15 @@ import { useNavigate } from 'react-router-dom';
 interface AssetFormSectionProps {
   selectedAssets: SelectedAsset[];
   opportunities: Opportunity[];
-  onComplete: () => void;
+  onComplete: (formData: Record<string, Record<string, string | number>>) => void;
+  onFieldChange?: (assetTitle: string, fieldName: string, value: string | number) => void;
 }
 
 const AssetFormSection = ({ 
   selectedAssets,
   opportunities,
   onComplete
+  ,onFieldChange
 }: AssetFormSectionProps) => {
   const [formData, setFormData] = useState<Record<string, Record<string, string | number>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -37,6 +39,27 @@ const AssetFormSection = ({
     selectedAssets: selectedAssets.map(a => ({ title: a.title, revenue: a.monthlyRevenue })),
     opportunitiesCount: opportunities.length
   });
+
+  // Merge parent-provided formData (if any) into local state.
+  // Local edits always win over incoming values to avoid wiping user input.
+  useEffect(() => {
+    setFormData((prev) => {
+      let changed = false;
+      const next = { ...prev };
+
+      selectedAssets.forEach((asset) => {
+        if (!asset.formData) return;
+        const existing = next[asset.title] || {};
+        const merged = { ...asset.formData, ...existing };
+        if (merged !== existing) {
+          next[asset.title] = merged;
+          changed = true;
+        }
+      });
+
+      return changed ? next : prev;
+    });
+  }, [selectedAssets]);
 
   // Memoize form fields lookup to prevent unnecessary recalculations
   const formFieldsMap = useMemo(() => {
@@ -58,7 +81,7 @@ const AssetFormSection = ({
     return fields;
   };
 
-  const handleInputChange = (assetTitle: string, fieldName: string, value: string | number) => {
+  const handleInputChange = useCallback((assetTitle: string, fieldName: string, value: string | number) => {
     console.log(`📝 Input changed for ${assetTitle}.${fieldName}:`, value);
     setFormData(prev => ({
       ...prev,
@@ -67,7 +90,15 @@ const AssetFormSection = ({
         [fieldName]: value
       }
     }));
-  };
+
+    onFieldChange?.(assetTitle, fieldName, value);
+  }, [onFieldChange]);
+
+  const getFieldValue = useCallback((assetTitle: string, field: FormField): string | number => {
+    const fromState = formData?.[assetTitle]?.[field.name];
+    if (fromState !== undefined && fromState !== null && fromState !== '') return fromState;
+    return field.value ?? '';
+  }, [formData]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -86,7 +117,7 @@ const AssetFormSection = ({
       setTimeout(() => {
         setIsSubmitting(false);
         console.log('📤🚀 CALLING onComplete() to trigger database save');
-        onComplete();
+        onComplete(formData);
       }, 500);
     } catch (error) {
       console.error('❌ Error submitting form:', error);
@@ -162,6 +193,7 @@ const AssetFormSection = ({
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                       {formFields.map((field, fieldIndex) => {
                         console.log(`🔧 Rendering field ${fieldIndex + 1}/${formFields.length} for ${asset.title}:`, field.name);
+                        const value = getFieldValue(asset.title, field);
                         
                         return (
                           <div key={`${asset.title}-${field.name}`} className="form-field">
@@ -171,11 +203,11 @@ const AssetFormSection = ({
                             
                             {field.type === "select" ? (
                               <Select 
-                                defaultValue={String(field.value)}
+                                value={String(value ?? '')}
                                 onValueChange={(value) => handleInputChange(asset.title, field.name, value)}
                               >
                                 <SelectTrigger className="glass-effect border-white/20 text-white">
-                                  <SelectValue placeholder={String(field.value)} />
+                                  <SelectValue placeholder={String(field.value ?? '')} />
                                 </SelectTrigger>
                                 <SelectContent>
                                   {field.options?.map(option => (
@@ -187,7 +219,7 @@ const AssetFormSection = ({
                               <Input
                                 id={`${asset.title}-${field.name}`}
                                 type={field.type} 
-                                defaultValue={field.value}
+                                value={field.type === "number" ? (value === undefined || value === null ? '' : String(value)) : String(value ?? '')}
                                 onChange={(e) => {
                                   const value = field.type === "number" 
                                     ? parseFloat(e.target.value) 
