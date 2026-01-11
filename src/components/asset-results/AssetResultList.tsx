@@ -272,7 +272,22 @@ const AssetResultList: React.FC<AssetResultListProps> = ({
     }
   }, [selectedAssets.length, selectedAssetsData, navigate, currentAnalysisId, analysisResults, address]);
 
-  const handleFormComplete = useCallback(async () => {
+  const handleAssetFieldChange = useCallback((assetTitle: string, fieldName: string, value: string | number) => {
+    setSelectedAssetsData((prev) =>
+      prev.map((asset) => {
+        if (asset.title !== assetTitle) return asset;
+        return {
+          ...asset,
+          formData: {
+            ...(asset.formData || {}),
+            [fieldName]: value,
+          },
+        };
+      })
+    );
+  }, []);
+
+  const handleFormComplete = useCallback(async (formDataFromChild: Record<string, Record<string, string | number>>) => {
     console.log('🚀🚀🚀 ATTEMPTING TO SAVE ASSET SELECTION WITH ROBUST RECOVERY 🚀🚀🚀');
     console.log('✅ Form completed');
     
@@ -301,6 +316,16 @@ const AssetResultList: React.FC<AssetResultListProps> = ({
       setShowAssetForm(false);
       return;
     }
+
+    // Merge the final form data from the child form into our selected assets before saving.
+    const assetsToSave = selectedAssetsData.map((asset) => ({
+      ...asset,
+      formData: {
+        ...(asset.formData || {}),
+        ...(formDataFromChild?.[asset.title] || {}),
+      },
+    }));
+    setSelectedAssetsData(assetsToSave);
 
     // ROBUST ANALYSIS ID RECOVERY - Multiple fallback strategies
     let finalAnalysisId = currentAnalysisId;
@@ -398,8 +423,8 @@ const AssetResultList: React.FC<AssetResultListProps> = ({
       console.log('📊 Asset selection validation:', validationResult);
       
       // Save each selected asset with comprehensive logging
-      const savePromises = selectedAssetsData.map(async (asset, index) => {
-        console.log(`💰 Saving asset ${index + 1}/${selectedAssetsData.length}:`, {
+      const savePromises = assetsToSave.map(async (asset, index) => {
+        console.log(`💰 Saving asset ${index + 1}/${assetsToSave.length}:`, {
           userId: user.id,
           analysisId: finalAnalysisId,
           assetTitle: asset.title,
@@ -433,7 +458,7 @@ const AssetResultList: React.FC<AssetResultListProps> = ({
       // Check if all saves were successful
       const successfulSaves = results.filter(r => r !== null).length;
       
-      if (successfulSaves === selectedAssetsData.length) {
+      if (successfulSaves === assetsToSave.length) {
         console.log('✅ Successfully saved all asset selections');
         
         // Track asset selection completion
@@ -441,7 +466,7 @@ const AssetResultList: React.FC<AssetResultListProps> = ({
         
         toast({
           title: "Assets Saved Successfully",
-          description: `${selectedAssetsData.length} asset selection${selectedAssetsData.length > 1 ? 's' : ''} saved to your dashboard`,
+          description: `${assetsToSave.length} asset selection${assetsToSave.length > 1 ? 's' : ''} saved to your dashboard`,
         });
         
         // Navigate to dashboard to see saved assets
@@ -453,7 +478,7 @@ const AssetResultList: React.FC<AssetResultListProps> = ({
         console.warn('⚠️ Some saves failed');
         toast({
           title: "Partial Save",
-          description: `${successfulSaves} of ${selectedAssetsData.length} assets saved successfully`,
+          description: `${successfulSaves} of ${assetsToSave.length} assets saved successfully`,
           variant: "destructive"
         });
         
@@ -473,7 +498,7 @@ const AssetResultList: React.FC<AssetResultListProps> = ({
     }
     
     setShowAssetForm(false);
-  }, [user, selectedAssetsData, address, addressCoordinates, currentAnalysisId, analysisComplete, analysisResults, toast, trackOption]);
+  }, [user, selectedAssetsData, currentAnalysisId, toast, trackOption]);
 
   // Memoize calculations to prevent unnecessary re-computation
   const { totalSelectedRevenue, totalSetupCost, analysisRevenue, totalMonthlyIncome } = useMemo(() => {
@@ -513,6 +538,7 @@ const AssetResultList: React.FC<AssetResultListProps> = ({
         selectedAssets={selectedAssetsData}
         opportunities={allOpportunities}
         onComplete={handleFormComplete}
+        onFieldChange={handleAssetFieldChange}
       />
     );
   }
